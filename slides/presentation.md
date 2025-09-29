@@ -18,7 +18,6 @@ img[alt~="center"] {
 
 # MCP Landscape for Developers
 
-
 ![bg opacity:0.08 grayscale ](./img/bg5.png)
 
 ---
@@ -32,6 +31,7 @@ img[alt~="center"] {
 - Lead Software Engineer at EPAM Systems
 - +10 years in software development
 - Open Source and Blogging
+- Someone who builds MCP Servers used in production 🙂
 
 > <i class="fa-brands fa-x"></i> [@nikiforovall](https://twitter.com/nikiforovall)
 <i class="fa-brands fa-github"></i> GitHub: [nikiforovall](https://github.com/nikiforovall)
@@ -49,8 +49,7 @@ section {
 </style>
 
 - Introduction to MCP
-- Use Cases and Benefits
-- Discover MCP
+- **MCP Registry: The App Store for Servers**
 - **Writing Effective MCP Tools: Production Best Practices**
 - Building MCP Servers with .NET
 - MCP in Agentic Systems
@@ -72,6 +71,8 @@ section {
 # It connects AI applications to external systems...
 
 ![saturate alt: center](./img/bg2.avif)
+
+<!-- this is really nice slide, spent some time explaining -->
 
 ---
 # MCP Servers Features
@@ -144,24 +145,177 @@ div {
     mindmap
         root(MCP Clients)
             🤖 Sampling
-                Search Flights
-                Create Calendar Events
-                Send Emails
+                Summarize Email
+                Plan a Trip
+                Decompose a Task
             🌲 Roots
                 FolderA
                 FolderB
             🗣️ Elicitation
                 Provide a flight destination
-                What is the date for the trip?
+                What is the date?
                 Who is a recipient?
 </div>
 
 ---
 <!-- _class: lead -->
 
+# MCP Discovery
+
+![bg opacity:0.08 grayscale ](./img/bg5.png)
+
+---
+
+# The Fragmentation Problem
+
+<style scoped>
+section {
+  font-size: 34px;
+}
+</style>
+
+### **Too Many Places to Search**
+
+Before the official registry, developers had to check multiple sources:
+
+- 📦 [mcpservers.org](https://mcpservers.org/)
+- 🐳 [hub.docker.com/mcp](https://hub.docker.com/mcp)
+- 💻 [github.com/mcp](https://github.com/mcp)
+- 🌐 [mcp.so](https://mcp.so/)
+- 🔍 Various community catalogs and lists
+
+**Problem**: No single source of truth, no standardization, no trust model
+
+<!-- spend some time and demonstrate examples of good mcp servers: markitdown, browsertools, playwright, context7 -->
+
+---
+
+# MCP Registry: The App Store for Servers
+
+<style scoped>
+section {
+  font-size: 36px;
+}
+</style>
+
+> **"An app store for MCP servers"** - Centralized discovery for the MCP ecosystem
+
+</br>
+
+* **Discovery**: Find available MCP servers across the ecosystem
+* **Trust & Validation**: GitHub OAuth, DNS verification, domain ownership
+* **Namespace Management**: Prevents conflicts (e.g., only `@user` can publish `io.github.user/*`)
+* **Status**: 🆕 Preview Release (September 2025)
+
+<!-- https://github.com/modelcontextprotocol/registry?tab=readme-ov-file -->
+
+---
+
+# Registry Architecture
+
+<style scoped>
+div {
+  display: grid;
+  place-items: center;
+}
+.mermaid {
+  transform: scale(1.1);
+  transform-origin: center;
+}
+</style>
+
+<div class="mermaid">
+    %%{init: {
+        'theme': 'dark',
+        'themeVariables': {
+            'fontSize': '28px',
+            'primaryTextColor': '#ffffff'
+        },
+        'flowchart': {
+            'nodeSpacing': 200,
+            'rankSpacing': 100
+        }
+    }}%%
+    flowchart TD
+        Client[MCP Client]
+        Registry[(MCP Registry)]
+        Dev[Developer]
+        Server1[MCP Server A]
+        Server2[MCP Server B]
+
+        Dev -->|Publish + Auth| Registry
+        Client -->|Discover| Registry
+        Client -->|Connect| Server1
+        Client -->|Connect| Server2
+
+        style Registry fill:#2d5f8d,stroke:#4a9eff,stroke-width:3px
+        style Client fill:#5d3a8d,stroke:#9b6dff,stroke-width:2px
+        style Server1 fill:#2d5f2d,stroke:#4a9e4a,stroke-width:2px
+        style Server2 fill:#2d5f2d,stroke:#4a9e4a,stroke-width:2px
+</div>
+
+---
+
+![width:1100 bg](./img/mcp-registry.png)
+
+---
+
+# Why We Need the Registry
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+❌ Without a registry, developers face:
+- **Fragmentation**: Servers scattered across repositories
+- **No Trust Model**: Can't verify server authenticity
+- **Naming Conflicts**: Multiple servers with same identifiers
+- **Poor Discoverability**: Hard to find what you need
+
+### **The Solution**
+
+A centralized, secure registry that:
+- ✅ Makes servers **easily discoverable**
+- ✅ Ensures **authenticity and trust**
+- ✅ Manages **namespaces** to prevent conflicts
+- ✅ Accelerates **ecosystem growth**
+
+
+---
+
+# Tool Catalog: Discovery in Action
+
+<style scoped>
+section {
+  font-size: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+a {
+  color: #4a9eff;
+  text-decoration: none;
+  font-size: 36px;
+}
+</style>
+
+### Explore available MCP tools and servers
+
+<br/>
+
+🔗 **[teamsparkai.github.io/ToolCatalog](https://teamsparkai.github.io/ToolCatalog/)**
+
+<br/>
+
+---
+<!-- _class: lead -->
+
 # Writing Effective MCP Tools: Best Practices
 
-![ bg fit grayscale:1 invert blur:5px opacity:0.5 ](./img/i1.avif)
+![ bg fit grayscale:1 invert blur:5px opacity:0.2 ](./img/i1.avif)
 
 ---
 
@@ -209,8 +363,8 @@ section {
 
 > **Agents are only as effective as the tools we give them**
 
-* Traditional software: deterministic contract between systems
-* **MCP Tools**: non-deterministic contract between systems and agents
+* Traditional software: *deterministic* contract between systems
+* **MCP Tools**: *non-deterministic* contract between systems and agents
 * Agents can hallucinate, misunderstand, or fail to use tools properly
 * **Solution**: Design tools specifically for agents, not just wrap APIs
 
@@ -242,7 +396,7 @@ section {
 
 ---
 
-# Collaborative Development with AI
+# 2. Collaborative Development with AI
 
 <style scoped>
 section {
@@ -300,7 +454,26 @@ div {
 
 ---
 
-# 2. Tool Consolidation & Efficiency
+<style scoped>
+section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+</style>
+
+
+![width:1000px](./img/tools_comparison.webp)
+
+Claude-optimized MCP servers achieve 80.1% accuracy vs 67.4% human-written
+
+<!-- https://www.anthropic.com/engineering/writing-tools-for-agents -->
+
+---
+
+# 3. Tool Consolidation & Efficiency
 
 <style scoped>
 section {
@@ -329,7 +502,7 @@ customer_context = get_customer_context(123)
 
 ---
 
-# 3. Namespacing & Organization
+# 4. Namespacing & Organization
 
 <style scoped>
 section {
@@ -355,7 +528,7 @@ asana_tasks_create()
 
 ---
 
-# 4. Return Meaningful Context
+# 5. Return Meaningful Context
 
 <style scoped>
 section {
@@ -387,7 +560,7 @@ section {
 
 ---
 
-# 5. Response Format Flexibility
+# 6. Response Format Flexibility
 
 <style scoped>
 section {
@@ -416,7 +589,7 @@ def search_messages(query: str,response_format: ResponseFormat = ResponseFormat.
 
 ---
 
-# 6. Token Efficiency Strategies
+# 7. Token Efficiency Strategies
 
 <style scoped>
 section {
@@ -441,7 +614,7 @@ Use filters or pagination to get more specific results:
 
 ---
 
-# 7. Better Error Handling
+# 8. Better Error Handling
 
 <style scoped>
 section {
@@ -470,7 +643,7 @@ Example: search_user(user_id="john.smith", include_profile=true)
 
 ---
 
-# 8. Tool Description Best Practices
+# 9. Tool Description Best Practices
 
 <style scoped>
 section {
@@ -502,7 +675,7 @@ def search_slack_messages(
 
 ---
 
-# 9. Evaluation-Driven Development
+# 10. Evaluation-Driven Development
 
 <style scoped>
 section {
@@ -530,7 +703,7 @@ section {
 
 ---
 
-# 10. Metrics That Matter
+# 11. Metrics That Matter
 
 <style scoped>
 section {
@@ -551,7 +724,7 @@ Let Claude analyze evaluation transcripts and suggest improvements
 
 ---
 
-# 11. Production Security Considerations
+# 12. Production Security Considerations
 
 <style scoped>
 section {
@@ -578,7 +751,7 @@ def execute_query(query: str):
 
 ---
 
-# 12. Authentication & Authorization
+# 13. Authentication & Authorization
 
 <style scoped>
 section {
@@ -625,7 +798,19 @@ section {
 
 ---
 
-## MCP in Agentic Systems
+<!-- _class: lead -->
+
+# Building MCP Servers with .NET
+
+![bg opacity:0.08 grayscale ](./img/bg5.png)
+
+---
+
+<!-- _class: lead -->
+
+# MCP in Agentic Systems
+
+![bg opacity:0.08 grayscale ](./img/bg5.png)
 
 ---
 
@@ -633,7 +818,9 @@ section {
 
 ---
 
-## Q&A
+<!-- _class: lead -->
+
+# Q&A
 
 <script type="module">
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
