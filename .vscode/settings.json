@@ -1,0 +1,17 @@
+{
+    "markdown.marp.html": "all",
+    "markdown.marp.themes": [
+        "https://raw.githubusercontent.com/mastern2k3/marpit-nord-theme/master/build/nord-theme.css",
+        "https://cunhapaulo.github.io/marpx/themes/marpx.css",
+        "https://cunhapaulo.github.io/marpx/themes/copernicus.css",
+        "https://cunhapaulo.github.io/marpx/themes/einstein.css",
+        "https://cunhapaulo.github.io/marpx/themes/frankfurt.css",
+        "https://cunhapaulo.github.io/marpx/themes/gödel.css",
+        "https://cunhapaulo.github.io/marpx/themes/gropius.css",
+        "https://cunhapaulo.github.io/marpx/themes/newton.css",
+        "https://cunhapaulo.github.io/marpx/themes/socrates.css",
+        "https://cunhapaulo.github.io/marpx/themes/sparta.css",
+        "./slides/themes/theme.css",
+        "./slides/themes/base.css"
+    ]
+}
