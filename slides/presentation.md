@@ -162,7 +162,7 @@ div {
 
 # MCP Discovery
 
-![bg opacity:0.08 grayscale ](./img/bg5.png)
+![bg opacity:0.08 grayscale ](./img/bg10.png)
 
 ---
 
@@ -186,7 +186,9 @@ Before the official registry, developers had to check multiple sources:
 
 **Problem**: No single source of truth, no standardization, no trust model
 
-<!-- spend some time and demonstrate examples of good mcp servers: markitdown, browsertools, playwright, context7 -->
+<!-- show different servers remote vs local (stdio), explain the difference -->
+
+<!-- spend some time and demonstrate examples of good mcp servers: markitdown, browsertools, playwright, context7, microsoft doc -->
 
 ---
 
@@ -237,21 +239,10 @@ div {
         }
     }}%%
     flowchart TD
-        Client[MCP Client]
-        Registry[(MCP Registry)]
-        Dev[Developer]
-        Server1[MCP Server A]
-        Server2[MCP Server B]
-
-        Dev -->|Publish + Auth| Registry
-        Client -->|Discover| Registry
-        Client -->|Connect| Server1
-        Client -->|Connect| Server2
-
-        style Registry fill:#2d5f8d,stroke:#4a9eff,stroke-width:3px
-        style Client fill:#5d3a8d,stroke:#9b6dff,stroke-width:2px
-        style Server1 fill:#2d5f2d,stroke:#4a9e4a,stroke-width:2px
-        style Server2 fill:#2d5f2d,stroke:#4a9e4a,stroke-width:2px
+        Developer -->|Publish| Registry
+        MCPClient -->|Discover| Registry
+        MCPClient -->|Connect| MCPServer1
+        MCPClient -->|Connect| MCPServer2
 </div>
 
 ---
@@ -302,7 +293,7 @@ a {
 }
 </style>
 
-### Explore available MCP tools and servers
+### Explore available MCP Servers
 
 <br/>
 
@@ -396,7 +387,209 @@ section {
 
 ---
 
-# 2. Collaborative Development with AI
+# 2. Tool Consolidation
+
+<style scoped>
+section {
+  font-size: 30px;
+}
+</style>
+
+### **Consolidate Related Operations**
+
+Instead of multiple discrete tools:
+```python
+# ❌ Multiple calls required
+user = get_customer_by_id(123)
+transactions = list_transactions(123)
+notes = list_notes(123)
+```
+
+Build comprehensive tools:
+```python
+# ✅ Single call with rich context
+customer_context = get_customer_context(123)
+# Returns: user info, recent transactions, notes, support history
+```
+
+**Benefits**: Reduces token consumption, fewer API calls, better context
+
+---
+
+# 3. Namespacing & Organization
+
+<style scoped>
+section {
+  font-size: 34px;
+}
+</style>
+
+### **Clear Tool Boundaries**
+```python
+# Service-based namespacing
+asana_search_projects()
+asana_create_task()
+jira_search_issues()
+jira_update_status()
+
+# Resource-based namespacing  
+asana_projects_search()
+asana_users_search()
+asana_tasks_create()
+```
+
+**Why it matters**: Prevents tool confusion when agents have access to hundreds of tools
+
+---
+
+# 4. Return Meaningful Context
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+### **Prioritize Signal Over Noise**
+
+```json
+// ❌ Technical, low-signal response
+{
+  "uuid": "a8f5f167-aa82-44d1-9c4e-8c1a2d8b9e7f",
+  "mime_type": "application/json", 
+  "256px_image_url": "https://cdn.../thumb_256.jpg",
+  "created_timestamp": 1640995200
+}
+
+// ✅ Human-readable, high-signal response  
+{
+  "name": "John Smith",
+  "image_url": "https://cdn.../profile.jpg",
+  "file_type": "JSON Document",
+  "created": "2 days ago"
+}
+```
+
+💡 **Hint:** Use natural language identifiers over UUIDs when possible
+
+---
+
+# 5. Response Format Flexibility
+
+<style scoped>
+section {
+  font-size: 32px;
+}
+</style>
+
+### **Adaptive Detail Levels**
+
+```python
+def search_messages(query: str,response_format: ResponseFormat = ResponseFormat.CONCISE):
+    if response_format == ResponseFormat.DETAILED:
+        return {
+            "content": "Meeting notes...",
+            "thread_id": "1234567890",
+            "channel_id": "C1234567890",
+            "user_id": "U0987654321"
+        }
+    else:  # CONCISE
+        return {
+            "content": "Meeting notes..."
+        }
+```
+
+**Result**: 3x token reduction with concise format while preserving functionality
+
+---
+
+# 6. Token Efficiency Strategies
+
+<style scoped>
+section {
+  font-size: 30px;
+}
+</style>
+
+### **Implement Smart Limits**
+* **Pagination**: Default page sizes (e.g., 10-20 items)
+* **Filtering**: Built-in search parameters  
+* **Truncation**: Sensible token limits (e.g., 25k tokens)
+* **Range Selection**: Date ranges, result limits
+
+### **Helpful Truncation Messages**
+```
+⚠️ Response truncated after 500 results. 
+Use filters or pagination to get more specific results:
+- Add date_range parameter
+- Use more specific search terms
+- Request smaller page_size
+```
+
+---
+
+# 7. Better Error Handling
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+### **❌ Unhelpful Errors**
+```
+Error: Invalid input
+Status: 400
+Traceback: ValidationError at line 47...
+```
+
+### **✅ Actionable Error Messages**
+```
+Error: Missing required parameter 'user_id'
+
+Expected format: 
+- user_id: string (e.g., "john.smith" or "U1234567")
+
+Example: search_user(user_id="john.smith", include_profile=true)
+```
+
+**Guide agents toward correct usage patterns**
+
+---
+
+# 8. Tool Description Best Practices
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+### **Write for New Team Members**
+
+```python
+# ❌ Vague description
+def search(query: str, user: str):
+    """Search stuff for user"""
+
+# ✅ Clear, detailed description  
+def search_slack_messages(
+    query: str,           # Search terms (e.g., "project alpha", "meeting notes")
+    user_id: str,         # Slack user ID (format: U1234567) or username
+    channel_id: str = "", # Optional: limit to specific channel
+    date_range: str = "7d" # Search period: "1d", "7d", "30d", or "all"
+):
+    """
+    Search Slack messages and threads for specific content.
+    
+    Best for: Finding past conversations, meeting notes, decisions
+    Returns: Message content, author, timestamp, thread context
+    """
+```
+
+---
+
+# 9. Collaborative Development with AI
 
 <style scoped>
 section {
@@ -470,208 +663,6 @@ section {
 Claude-optimized MCP servers achieve 80.1% accuracy vs 67.4% human-written
 
 <!-- https://www.anthropic.com/engineering/writing-tools-for-agents -->
-
----
-
-# 3. Tool Consolidation & Efficiency
-
-<style scoped>
-section {
-  font-size: 30px;
-}
-</style>
-
-### **Consolidate Related Operations**
-
-Instead of multiple discrete tools:
-```python
-# ❌ Multiple calls required
-user = get_customer_by_id(123)
-transactions = list_transactions(123)
-notes = list_notes(123)
-```
-
-Build comprehensive tools:
-```python
-# ✅ Single call with rich context
-customer_context = get_customer_context(123)
-# Returns: user info, recent transactions, notes, support history
-```
-
-**Benefits**: Reduces token consumption, fewer API calls, better context
-
----
-
-# 4. Namespacing & Organization
-
-<style scoped>
-section {
-  font-size: 34px;
-}
-</style>
-
-### **Clear Tool Boundaries**
-```python
-# Service-based namespacing
-asana_search_projects()
-asana_create_task()
-jira_search_issues()
-jira_update_status()
-
-# Resource-based namespacing  
-asana_projects_search()
-asana_users_search()
-asana_tasks_create()
-```
-
-**Why it matters**: Prevents tool confusion when agents have access to hundreds of tools
-
----
-
-# 5. Return Meaningful Context
-
-<style scoped>
-section {
-  font-size: 28px;
-}
-</style>
-
-### **Prioritize Signal Over Noise**
-
-```json
-// ❌ Technical, low-signal response
-{
-  "uuid": "a8f5f167-aa82-44d1-9c4e-8c1a2d8b9e7f",
-  "mime_type": "application/json", 
-  "256px_image_url": "https://cdn.../thumb_256.jpg",
-  "created_timestamp": 1640995200
-}
-
-// ✅ Human-readable, high-signal response  
-{
-  "name": "John Smith",
-  "image_url": "https://cdn.../profile.jpg",
-  "file_type": "JSON Document",
-  "created": "2 days ago"
-}
-```
-
-💡 **Hint:** Use natural language identifiers over UUIDs when possible
-
----
-
-# 6. Response Format Flexibility
-
-<style scoped>
-section {
-  font-size: 32px;
-}
-</style>
-
-### **Adaptive Detail Levels**
-
-```python
-def search_messages(query: str,response_format: ResponseFormat = ResponseFormat.CONCISE):
-    if response_format == ResponseFormat.DETAILED:
-        return {
-            "content": "Meeting notes...",
-            "thread_id": "1234567890",
-            "channel_id": "C1234567890",
-            "user_id": "U0987654321"
-        }
-    else:  # CONCISE
-        return {
-            "content": "Meeting notes..."
-        }
-```
-
-**Result**: 3x token reduction with concise format while preserving functionality
-
----
-
-# 7. Token Efficiency Strategies
-
-<style scoped>
-section {
-  font-size: 30px;
-}
-</style>
-
-### **Implement Smart Limits**
-* **Pagination**: Default page sizes (e.g., 10-20 items)
-* **Filtering**: Built-in search parameters  
-* **Truncation**: Sensible token limits (e.g., 25k tokens)
-* **Range Selection**: Date ranges, result limits
-
-### **Helpful Truncation Messages**
-```
-⚠️ Response truncated after 500 results. 
-Use filters or pagination to get more specific results:
-- Add date_range parameter
-- Use more specific search terms
-- Request smaller page_size
-```
-
----
-
-# 8. Better Error Handling
-
-<style scoped>
-section {
-  font-size: 28px;
-}
-</style>
-
-### **❌ Unhelpful Errors**
-```
-Error: Invalid input
-Status: 400
-Traceback: ValidationError at line 47...
-```
-
-### **✅ Actionable Error Messages**
-```
-Error: Missing required parameter 'user_id'
-
-Expected format: 
-- user_id: string (e.g., "john.smith" or "U1234567")
-
-Example: search_user(user_id="john.smith", include_profile=true)
-```
-
-**Guide agents toward correct usage patterns**
-
----
-
-# 9. Tool Description Best Practices
-
-<style scoped>
-section {
-  font-size: 28px;
-}
-</style>
-
-### **Write for New Team Members**
-
-```python
-# ❌ Vague description
-def search(query: str, user: str):
-    """Search stuff for user"""
-
-# ✅ Clear, detailed description  
-def search_slack_messages(
-    query: str,           # Search terms (e.g., "project alpha", "meeting notes")
-    user_id: str,         # Slack user ID (format: U1234567) or username
-    channel_id: str = "", # Optional: limit to specific channel
-    date_range: str = "7d" # Search period: "1d", "7d", "30d", or "all"
-):
-    """
-    Search Slack messages and threads for specific content.
-    
-    Best for: Finding past conversations, meeting notes, decisions
-    Returns: Message content, author, timestamp, thread context
-    """
-```
 
 ---
 
@@ -802,7 +793,332 @@ section {
 
 # Building MCP Servers with .NET
 
+![bg opacity:0.08 grayscale ](./img/bg3.png)
+
+---
+# Simple Installation
+```bash
+dotnet new install Nall.ModelContextProtocol.Template::0.9.0
+
+# Template Name         Short Name            Language  Tags
+# --------------------  --------------------  --------  -------------
+# MCP Server            mcp-server            [C#]      dotnet/ai/mcp
+# MCP Server HTTP       mcp-server-http       [C#]      dotnet/ai/mcp
+# MCP Server HTTP Auth  mcp-server-http-auth  [C#]      dotnet/ai/mcp
+# MCP Server Hybrid     mcp-server-hybrid     [C#]      dotnet/ai/mcp
+```
+
+---
+
+# And Getting Started...
+
+```bash
+dotnet new mcp-server -n MyFirstMcp -o MyFirstMCP --dry-run
+# File actions would have been taken:
+#   Create: MyFirstMCP\MyFirstMcp.csproj
+#   Create: MyFirstMCP\Program.cs
+#   Create: MyFirstMCP\Properties\launchSettings.json
+#   Create: MyFirstMCP\README.md
+#   Create: MyFirstMCP\appsettings.Development.json
+#   Create: MyFirstMCP\appsettings.json
+```
+
+---
+# Echo Server: Program.cs
+
+```ts
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Logging.AddConsole(cfg =>
+{
+    cfg.LogToStandardErrorThreshold = LogLevel.Trace;
+});
+
+builder.Services
+  .AddMcpServer()
+  .WithStdioServerTransport()
+  .WithToolsFromAssembly();
+
+builder.Services.AddTransient<EchoTool>();
+
+await builder.Build().RunAsync();
+```
+---
+# Echo Server: EchoTool.cs
+
+```csharp
+[McpServerToolType]
+public class EchoTool(ILogger<EchoTool> logger)
+{
+    [
+        McpServerTool(
+            Destructive = false,
+            Idempotent = true,
+            Name = "echo_hello",
+            OpenWorld = false,
+            ReadOnly = true,
+            Title = "Write a hello message to the client",
+            UseStructuredContent = false
+        ),
+        Description("Echoes the message back to the client.")
+    ]
+    [return: Description("The echoed message")]
+    public string Echo([Description("The message to echo back")] string message)
+    {
+        logger.LogInformation("Echo called with message: {Message}", message);
+
+        return $"hello, {message}!";
+    }
+}
+
+```
+---
+
+# Run It 🚀
+
+```bash
+npx @modelcontextprotocol/inspector -h
+
+#Usage: inspector-bin [options]
+
+#Options:
+#  -e <env>               environment variables in KEY=VALUE format (default: {})
+#  --config <path>        config file path
+#  --server <n>           server name from config file
+#  --cli                  enable CLI mode
+#  --transport <type>     transport type (stdio, sse, http)
+#  --server-url <url>     server URL for SSE/HTTP transport
+#  --header <headers...>  HTTP headers as "HeaderName: Value" pairs (for HTTP/SSE transports) (default: {})
+#  -h, --help             display help for command
+```
+```bash
+npx @modelcontextprotocol/inspector dotnet run -v q
+```
+
+---
+
+
+<!-- _class: lead -->
+
+# Securing MCP Servers with OAuth2.1
+
 ![bg opacity:0.08 grayscale ](./img/bg5.png)
+
+---
+
+# Create new Project with Authentication Enabled
+
+```bash
+dotnet new mcp-server-http-auth -n MyFirstAuthMcp -o MyFirstAuthMcp --dry-run
+#  Create: MyFirstAuthMcp\.vscode\mcp.json
+#  Create: MyFirstAuthMcp\MyFirstAuthMcp.csproj
+#  Create: MyFirstAuthMcp\Program.cs
+#  Create: MyFirstAuthMcp\Properties\launchSettings.json
+#  Create: MyFirstAuthMcp\README.md
+#  Create: MyFirstAuthMcp\Tools\EchoTool.cs
+#  Create: MyFirstAuthMcp\Tools\UserService.cs
+#  Create: MyFirstAuthMcp\appsettings.Development.json
+#  Create: MyFirstAuthMcp\appsettings.json
+```
+
+---
+
+# Auth Server: Program.cs
+
+```ts
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<UserService>();
+
+builder
+    .Services.AddAuthentication(options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = McpAuthenticationDefaults.AuthenticationScheme;
+    })
+    .AddMcp(options =>
+    {
+        var identityOptions = builder
+            .Configuration.GetSection("AzureAd")
+            .Get<MicrosoftIdentityOptions>()!;
+
+        options.ResourceMetadata = new ProtectedResourceMetadata
+        {
+            Resource = GetMcpServerUrl(),
+            AuthorizationServers = [GetAuthorizationServerUrl(identityOptions)],
+            ScopesSupported = [$"api://{identityOptions.ClientId}/Mcp.User"],
+        };
+    })
+    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.AddMcpServer().WithToolsFromAssembly().WithHttpTransport();
+
+var app = builder.Build();
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapMcp().RequireAuthorization();
+
+// Run the web server
+app.Run();
+```
+
+---
+# Auth Server: EchoTool.cs
+
+```csharp
+[McpServerToolType]
+public class EchoTool(UserService userService)
+{
+    [McpServerTool(
+        Name = "Echo",
+        Title = "Echoes the message back to the client.",
+        UseStructuredContent = true
+    )]
+    [Description("This tool echoes the message back to the client.")]
+    public EchoResponse Echo(string message) =>
+        new($"hello {message} from {userService.UserName}", userService.UserName!);
+}
+
+public record EchoResponse(string Message, string UserName);
+```
+
+---
+# Configure Azure AD App Registration
+
+```json
+{
+  "AzureAd": {
+    "Instance": "https://login.microsoftonline.com/",
+    "Domain": "",
+    "TenantId": "",
+    "ClientId": "",
+    "ClientSecret": ""
+  },
+  "McpServerUrl": "https://localhost:7000"
+}
+```
+
+---
+
+# Run It 🚀
+
+Run the server:
+```bash
+dotnet run
+```
+
+Check it from the Inspector:
+
+```bash
+npx @modelcontextprotocol/inspector --transport http --server-url https://localhost:7000
+```
+
+But there is a better way - use VSCode `mcp.json` config:
+
+```json
+{
+  "servers": {
+    "echo-mcp": {"url": "https://localhost:7000", "type": "http"}
+  }
+}
+```
+
+---
+
+<style scoped>
+section {
+  padding-top: 0;
+  margin-top: 0;
+}
+h1 {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+div {
+  display: grid;
+  place-items: center;
+}
+.mermaid {
+  transform: scale(0.9);
+  transform-origin: center;
+}
+</style>
+
+<div class="mermaid">
+    %%{init: {
+        'theme': 'dark',
+        'themeVariables': {
+        },
+        'flowchart': {
+            'nodeSpacing': 500,
+            'rankSpacing': 0
+        }
+    }}%%
+    sequenceDiagram
+        participant C as Client
+        participant M as MCP Server (Resource Server)
+        participant A as Authorization Server
+
+        C->>M: MCP request without token
+        M-->>C: HTTP 401 Unauthorized with WWW-Authenticate header
+        Note over C: Extract resource_metadata<br />from WWW-Authenticate
+
+        C->>M: GET /.well-known/oauth-protected-resource
+        M-->>C: Resource metadata with authorization server URL
+        Note over C: Validate RS metadata,<br />build AS metadata URL
+
+        C->>A: GET Authorization server metadata endpoint
+        Note over C,A: Try OAuth 2.0 and OpenID Connect<br/>discovery endpoints in priority order
+        A-->>C: Authorization server metadata
+
+        Note over C,A: OAuth 2.1 authorization flow happens here
+</div>
+
+---
+
+<style scoped>
+section {
+  padding-top: 0;
+  margin-top: ;
+}
+h1 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+div {
+  display: grid;
+  place-items: center;
+}
+.mermaid {
+  transform-origin: center;
+}
+</style>
+
+<div class="mermaid">
+    %%{init: {
+        'theme': 'dark',
+        'themeVariables': {
+        },
+        'flowchart': {
+            'nodeSpacing': 500,
+            'rankSpacing': 0
+        }
+    }}%%
+    sequenceDiagram
+        participant C as Client
+        participant M as MCP Server (Resource Server)
+        participant A as Authorization Server
+
+        C->>A: Token request
+        A-->>C: Access token
+
+        C->>M: MCP request with access token
+        M-->>C: MCP response
+        Note over C,M: MCP communication continues with valid token
+</div>
 
 ---
 
@@ -810,7 +1126,7 @@ section {
 
 # MCP in Agentic Systems
 
-![bg opacity:0.08 grayscale ](./img/bg5.png)
+![bg opacity:0.08 grayscale ](./img/bg10.png)
 
 ---
 
