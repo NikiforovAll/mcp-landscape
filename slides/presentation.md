@@ -29,9 +29,10 @@ img[alt~="center"] {
 ## Oleksii Nikiforov
 
 - Lead Software Engineer at EPAM Systems
+- AI Coach
 - +10 years in software development
 - Open Source and Blogging
-- Someone who builds MCP Servers used in production 🙂
+- <small>Someone who builds MCP Servers used in production 🙂</small>
 
 > <i class="fa-brands fa-x"></i> [@nikiforovall](https://twitter.com/nikiforovall)
 <i class="fa-brands fa-github"></i> GitHub: [nikiforovall](https://github.com/nikiforovall)
@@ -180,15 +181,15 @@ Before the official registry, developers had to check multiple sources:
 
 - 📦 [mcpservers.org](https://mcpservers.org/)
 - 🐳 [hub.docker.com/mcp](https://hub.docker.com/mcp)
-- 💻 [github.com/mcp](https://github.com/mcp)
 - 🌐 [mcp.so](https://mcp.so/)
+- 💻 [github.com/mcp](https://github.com/mcp)
 - 🔍 Various community catalogs and lists
 
 **Problem**: No single source of truth, no standardization, no trust model
 
 <!-- show different servers remote vs local (stdio), explain the difference -->
 
-<!-- spend some time and demonstrate examples of good mcp servers: markitdown, browsertools, playwright, context7, microsoft doc -->
+<!-- spend some time and demonstrate examples of good mcp servers: markitdown, browsertools, playwright, context7, microsoft docs -->
 
 ---
 
@@ -814,6 +815,7 @@ dotnet new install Nall.ModelContextProtocol.Template::0.9.0
 
 ```bash
 dotnet new mcp-server -n MyFirstMcp -o MyFirstMCP --dry-run
+
 # File actions would have been taken:
 #   Create: MyFirstMCP\MyFirstMcp.csproj
 #   Create: MyFirstMCP\Program.cs
@@ -870,7 +872,6 @@ public class EchoTool(ILogger<EchoTool> logger)
         return $"hello, {message}!";
     }
 }
-
 ```
 ---
 
@@ -897,6 +898,26 @@ npx @modelcontextprotocol/inspector dotnet run -v q
 
 ---
 
+# Learn More: Blog Series
+
+<style scoped>
+section {
+  font-size: 30px;
+}
+</style>
+
+📚 **Deep dive into my blog posts about MCP with .NET:**
+
+1. [Simplifying Model Context Protocol (MCP) Server Distribution with .NET Global Tools](https://nikiforovall.blog/dotnet/2025/04/02/mcp-template-getting-started.html)
+2. [Simplifying Model Context Protocol (MCP) Server Development with Aspire](https://nikiforovall.blog/dotnet/2025/04/04/mcp-template-and-aspire.html)
+3. [Learn how to use Model Context Protocol (MCP) Server Template in Hybrid Mode](https://nikiforovall.blog/dotnet/2025/04/08/hybrid-mcp-template.html)
+4. [Background Job Scheduling Using Hangfire MCP Server](https://nikiforovall.blog/dotnet/2025/05/25/hangfire-mcp.html)
+5. [Hangfire MCP Server in Standalone Mode](https://nikiforovall.blog/dotnet/2025/05/29/hangfire-mcp-standalone.html)
+6. 🆕 [Add Authentication to MCP Servers using Microsoft Entra ID](https://nikiforovall.blog/dotnet/2025/09/02/mcp-auth.html)
+
+
+---
+
 
 <!-- _class: lead -->
 
@@ -906,10 +927,82 @@ npx @modelcontextprotocol/inspector dotnet run -v q
 
 ---
 
+# MCP Security Fundamentals
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+> "When building on top of a fast-paced technology like MCP, **it's key** that you start with security as a foundation, not an afterthought."
+
+### **Why Security Matters**
+* MCP servers act as **bridges between AI agents and data sources**
+* Security breaches can:
+  * Compromise sensitive data
+  * Manipulate AI behavior and decision-making
+  * Lead to unauthorized access to connected systems
+
+### **Key Security Principles**
+* 🔒 **Defense in Depth**: Multiple layers of security controls
+* 🎯 **Least Privilege**: Minimal access rights for users and systems
+* 📊 **Observability**: Comprehensive logging and monitoring
+
+---
+
+# OAuth 2.1 Architecture Overview
+
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+
+### **Authorization Flow**
+1. **Discovery Phase**: Unauthenticated access returns *metadata URL*
+2. **Client Registration**: Dynamic client registration with authorization server. Some clients may be pre-registered ...
+3. **User Consent**: User provides authorization and consent
+4. **Token Exchange**:MCP client exchanges authorization code for access token.
+5. **Authenticated requests**. All subsequent requests from MCP client to MCP server include `Bearer` token.
+
+### **Key Components**
+* **Protected Resource Metadata (PRM)**: OAuth 2.0 specification for resource protection. The MCP server must implement the `/.well-known/oauth-protected-resource`
+* **Resource Indicators**: Prevents token reuse across different resources
+* **Token Validation**: Verify user identity and permissions on every request
+
+---
+
+<style scoped>
+section {
+  padding-top: 0;
+  margin-top: 0;
+}
+.mermaid {
+  transform: scale(0.9);
+  transform-origin: center;
+}
+</style>
+
+![](./img/oauth_1.svg)
+
+---
+
+<style scoped>
+.mermaid {
+  transform-origin: center;
+}
+</style>
+
+![](./img/oauth_2.svg)
+
+---
+
 # Create new Project with Authentication Enabled
 
 ```bash
 dotnet new mcp-server-http-auth -n MyFirstAuthMcp -o MyFirstAuthMcp --dry-run
+
 #  Create: MyFirstAuthMcp\.vscode\mcp.json
 #  Create: MyFirstAuthMcp\MyFirstAuthMcp.csproj
 #  Create: MyFirstAuthMcp\Program.cs
@@ -1028,100 +1121,6 @@ But there is a better way - use VSCode `mcp.json` config:
 
 ---
 
-<style scoped>
-section {
-  padding-top: 0;
-  margin-top: 0;
-}
-h1 {
-  margin-top: 10px;
-  margin-bottom: 20px;
-}
-div {
-  display: grid;
-  place-items: center;
-}
-.mermaid {
-  transform: scale(0.9);
-  transform-origin: center;
-}
-</style>
-
-<div class="mermaid">
-    %%{init: {
-        'theme': 'dark',
-        'themeVariables': {
-        },
-        'flowchart': {
-            'nodeSpacing': 500,
-            'rankSpacing': 0
-        }
-    }}%%
-    sequenceDiagram
-        participant C as Client
-        participant M as MCP Server (Resource Server)
-        participant A as Authorization Server
-
-        C->>M: MCP request without token
-        M-->>C: HTTP 401 Unauthorized with WWW-Authenticate header
-        Note over C: Extract resource_metadata<br />from WWW-Authenticate
-
-        C->>M: GET /.well-known/oauth-protected-resource
-        M-->>C: Resource metadata with authorization server URL
-        Note over C: Validate RS metadata,<br />build AS metadata URL
-
-        C->>A: GET Authorization server metadata endpoint
-        Note over C,A: Try OAuth 2.0 and OpenID Connect<br/>discovery endpoints in priority order
-        A-->>C: Authorization server metadata
-
-        Note over C,A: OAuth 2.1 authorization flow happens here
-</div>
-
----
-
-<style scoped>
-section {
-  padding-top: 0;
-  margin-top: ;
-}
-h1 {
-  margin-top: 0;
-  margin-bottom: 20px;
-}
-div {
-  display: grid;
-  place-items: center;
-}
-.mermaid {
-  transform-origin: center;
-}
-</style>
-
-<div class="mermaid">
-    %%{init: {
-        'theme': 'dark',
-        'themeVariables': {
-        },
-        'flowchart': {
-            'nodeSpacing': 500,
-            'rankSpacing': 0
-        }
-    }}%%
-    sequenceDiagram
-        participant C as Client
-        participant M as MCP Server (Resource Server)
-        participant A as Authorization Server
-
-        C->>A: Token request
-        A-->>C: Access token
-
-        C->>M: MCP request with access token
-        M-->>C: MCP response
-        Note over C,M: MCP communication continues with valid token
-</div>
-
----
-
 <!-- _class: lead -->
 
 # MCP in Agentic Systems
@@ -1130,13 +1129,153 @@ div {
 
 ---
 
-## Azure AI Foundry Integration
+# Microsoft Agent Framework and Azure AI Foundry
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+### **Microsoft Agent Framework**
+* **Cross-platform**: .NET (C#) and Python support
+* **Unified abstraction**: Common `AIAgent` base for all agent types
+* **Multi-backend**: Azure OpenAI, OpenAI, Azure AI Foundry, Ollama, custom
+* **Built-in features**: Function calling, multi-turn conversations, structured output, streaming
+* **Workflows**: Type-safe orchestration of multiple agents and business processes
+
+### **Azure AI Foundry**
+* **Unified platform** for building, evaluating, and deploying AI agents
+* **Server-side persistent agents** with **built-in MCP support**
+* **Enterprise-ready**: Authentication, monitoring, compliance, scalability
 
 ---
 
-<!-- _class: lead -->
+# Building Agents with MCP Tools: Code Example
 
-# Q&A
+<style scoped>
+section {
+  font-size: 24px;
+}
+pre {
+  font-size: 18px;
+}
+</style>
+
+```csharp
+// Create an MCP tool definition for the agent
+var mcpTool = new MCPToolDefinition(
+    serverLabel: "microsoft_learn",
+    serverUrl: "https://learn.microsoft.com/api/mcp"
+);
+mcpTool.AllowedTools.Add("microsoft_docs_search");
+
+// Create a persistent agent with MCP tools
+var agentMetadata = await persistentAgentsClient.Administration.CreateAgentAsync(
+    model: "gpt-4o-mini",
+    name: "MicrosoftLearnAgent",
+    instructions: "You answer questions by searching Microsoft Learn content only.",
+    tools: [mcpTool]
+);
+
+// Retrieve the agent as an AIAgent
+AIAgent agent = await persistentAgentsClient.GetAIAgentAsync(agentMetadata.Value.Id);
+```
+
+**Full example**: `samples/agent_03_foundry_mcp.cs`
+
+---
+
+# Using the Agent: Code Example
+
+<style scoped>
+section {
+  font-size: 24px;
+}
+pre {
+  font-size: 18px;
+}
+</style>
+
+```csharp
+// Configure MCP tool resources with approval settings
+var runOptions = new ChatClientAgentRunOptions()
+{
+    ChatOptions = new()
+    {
+        RawRepresentationFactory = (_) => new ThreadAndRunOptions()
+        {
+            ToolResources = new MCPToolResource(serverLabel: "microsoft_learn")
+            {
+                RequireApproval = new MCPApproval("never"),
+            }.ToToolResources(),
+        },
+    },
+};
+
+// Create a thread and run the agent
+AgentThread thread = agent.GetNewThread();
+var response = await agent.RunAsync(
+    "Please find what's new in .NET 10. Hint: Use the 'microsoft_docs_search' tool.",
+    thread,
+    runOptions
+);
+```
+
+**Result**: Agent automatically calls the MCP tool to search Microsoft Learn documentation
+
+---
+
+# What We've Learned Today
+
+<style scoped>
+div {
+  display: grid;
+  place-items: center;
+}
+.mermaid {
+  transform: scale(0.95);
+  transform-origin: center;
+}
+</style>
+
+<div class="mermaid">
+    %%{init: {
+        'theme': 'dark',
+        'themeVariables': {
+            'fontSize': '20px'
+        },
+        'flowchart': {
+            'nodeSpacing': 500,
+            'rankSpacing': 0
+        }
+    }}%%
+    mindmap
+        root((MCP Landscape))
+            🌐 MCP Fundamentals
+                Protocol Architecture
+                Client-Server Model
+                Tools
+            📦 MCP Registry
+                Centralized Discovery
+                Trust & Validation
+            ✍️ Writing Effective Tools
+                Design for Agents
+                Tool Consolidation
+                Token Efficiency
+                Error Handling
+                Evaluation-Driven Dev
+            🔒 Security
+                OAuth 2.1
+                Authentication
+            🛠️ Building with .NET
+                MCP Server Template
+                Stdio & HTTP Transport
+            🤖 Agentic Systems
+                Microsoft Agent Framework
+                Azure AI Foundry
+                MCP Integration
+</div>
 
 <script type="module">
 import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';

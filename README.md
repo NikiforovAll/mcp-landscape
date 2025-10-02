@@ -11,6 +11,11 @@ Dive into the core concepts, architecture, and ecosystem of Model Context Protoc
 - <https://modelcontextprotocol.io/docs/learn/architecture>
 - <https://github.blog/ai-and-ml/generative-ai/how-to-build-secure-and-scalable-remote-mcp-servers/>
 
-- Themes: https://github.com/marp-team/awesome-marp, https://github.com/cunhapaulo/marpstyle, https://github.com/cunhapaulo/MarpX
-- <https://www.apideck.com/blog/understanding-the-security-landscape-of-mcp>
+---
+
+- Marp Themes:
+
+- https://github.com/marp-team/awesome-marp
+- https://github.com/cunhapaulo/marpstyle
+- https://github.com/cunhapaulo/MarpX
 
