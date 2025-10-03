@@ -57,23 +57,22 @@ section {
 
 ---
 
+<style scoped>
+section {
+  background-color: #fffcf6;
+}
+</style>
+
+![saturate bg fit](./img/wmcp.jpg)
+
+---
+
 # What is the Model Context Protocol (MCP)?
 
 > MCP (Model Context Protocol) is an open-source standard for connecting AI applications to external systems.
 
-</br>
-
-* **Client Server Architecture**
-* **Data layer**: Defines the JSON-RPC based protocol for client-server communication
-* **Transport layer**: Defines the communication mechanisms and channels that enable data exchange between clients and servers, including transport-specific connection establishment, message framing, and authorization
-
----
-
-# It connects AI applications to external systems...
 
 ![saturate alt: center](./img/bg2.avif)
-
-<!-- this is really nice slide, spent some time explaining -->
 
 ---
 # MCP Servers Features
@@ -214,6 +213,30 @@ section {
 
 ---
 
+# Why We Need the Registry
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+❌ Without a registry, developers face:
+- **Fragmentation**: Servers scattered across repositories
+- **No Trust Model**: Can't verify server authenticity
+- **Naming Conflicts**: Multiple servers with same identifiers
+- **Poor Discoverability**: Hard to find what you need
+
+### **The Solution**
+
+A centralized, secure registry that:
+- ✅ Makes servers **easily discoverable**
+- ✅ Ensures **authenticity and trust**
+- ✅ Manages **namespaces** to prevent conflicts
+- ✅ Accelerates **ecosystem growth**
+
+---
+
 # Registry Architecture
 
 <style scoped>
@@ -249,31 +272,6 @@ div {
 ---
 
 ![width:1100 bg](./img/mcp-registry.png)
-
----
-
-# Why We Need the Registry
-
-<style scoped>
-section {
-  font-size: 28px;
-}
-</style>
-
-❌ Without a registry, developers face:
-- **Fragmentation**: Servers scattered across repositories
-- **No Trust Model**: Can't verify server authenticity
-- **Naming Conflicts**: Multiple servers with same identifiers
-- **Poor Discoverability**: Hard to find what you need
-
-### **The Solution**
-
-A centralized, secure registry that:
-- ✅ Makes servers **easily discoverable**
-- ✅ Ensures **authenticity and trust**
-- ✅ Manages **namespaces** to prevent conflicts
-- ✅ Accelerates **ecosystem growth**
-
 
 ---
 
@@ -1057,7 +1055,6 @@ app.MapMcp().RequireAuthorization();
 // Run the web server
 app.Run();
 ```
-
 ---
 # Auth Server: EchoTool.cs
 
@@ -1077,7 +1074,6 @@ public class EchoTool(UserService userService)
 
 public record EchoResponse(string Message, string UserName);
 ```
-
 ---
 # Configure Azure AD App Registration
 
