@@ -50,7 +50,6 @@ section {
 </style>
 
 - Introduction to MCP
-- **MCP Registry: The App Store for Servers**
 - **Writing Effective MCP Tools: Production Best Practices**
 - Building MCP Servers with .NET
 
@@ -157,15 +156,8 @@ div {
 </div>
 
 ---
-<!-- _class: lead -->
 
-# MCP Discovery
-
-![bg opacity:0.08 grayscale ](./img/bg10.png)
-
----
-
-# The Fragmentation Problem
+# If you have a favorite product probably it already have MCP for it...
 
 <style scoped>
 section {
@@ -173,131 +165,13 @@ section {
 }
 </style>
 
-### **Too Many Places to Search**
-
-Before the official registry, developers had to check multiple sources:
-
+- 💻 [github.com/mcp](https://github.com/mcp)
 - 📦 [mcpservers.org](https://mcpservers.org/)
 - 🐳 [hub.docker.com/mcp](https://hub.docker.com/mcp)
 - 🌐 [mcp.so](https://mcp.so/)
-- 💻 [github.com/mcp](https://github.com/mcp)
-- 🔍 Various community catalogs and lists
-
-**Problem**: No single source of truth, no standardization, no trust model
-
-<!-- show different servers remote vs local (stdio), explain the difference -->
-
-<!-- spend some time and demonstrate examples of good mcp servers: markitdown, browsertools, playwright, context7, microsoft docs -->
-
----
-
-# MCP Registry: The App Store for Servers
-
-<style scoped>
-section {
-  font-size: 36px;
-}
-</style>
-
-> **"An app store for MCP servers"** - Centralized discovery for the MCP ecosystem
-
-</br>
-
-* **Discovery**: Find available MCP servers across the ecosystem
-* **Trust & Validation**: GitHub OAuth, DNS verification, domain ownership
-* **Namespace Management**: Prevents conflicts (e.g., only `@user` can publish `io.github.user/*`)
-* **Status**: 🆕 Preview Release (September 2025)
-
-<!-- https://github.com/modelcontextprotocol/registry?tab=readme-ov-file -->
-
----
-
-# Why We Need the Registry
-
-<style scoped>
-section {
-  font-size: 28px;
-}
-</style>
-
-❌ Without a registry, developers face:
-- **Fragmentation**: Servers scattered across repositories
-- **No Trust Model**: Can't verify server authenticity
-- **Naming Conflicts**: Multiple servers with same identifiers
-- **Poor Discoverability**: Hard to find what you need
-
-### **The Solution**
-
-A centralized, secure registry that:
-- ✅ Makes servers **easily discoverable**
-- ✅ Ensures **authenticity and trust**
-- ✅ Manages **namespaces** to prevent conflicts
-- ✅ Accelerates **ecosystem growth**
-
----
-
-# Registry Architecture
-
-<style scoped>
-div {
-  display: grid;
-  place-items: center;
-}
-.mermaid {
-  transform: scale(1.1);
-  transform-origin: center;
-}
-</style>
-
-<div class="mermaid">
-    %%{init: {
-        'theme': 'dark',
-        'themeVariables': {
-            'fontSize': '28px',
-            'primaryTextColor': '#ffffff'
-        },
-        'flowchart': {
-            'nodeSpacing': 200,
-            'rankSpacing': 100
-        }
-    }}%%
-    flowchart TD
-        Developer -->|Publish| Registry
-        MCPClient -->|Discover| Registry
-        MCPClient -->|Connect| MCPServer1
-        MCPClient -->|Connect| MCPServer2
-</div>
-
----
-
-![width:1100 bg](./img/mcp-registry.png)
-
----
-
-# Tool Catalog: Discovery in Action
-
-<style scoped>
-section {
-  font-size: 38px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-a {
-  color: #4a9eff;
-  text-decoration: none;
-  font-size: 36px;
-}
-</style>
-
-### Explore available MCP Servers
-
-<br/>
-
-🔗 **[teamsparkai.github.io/ToolCatalog](https://teamsparkai.github.io/ToolCatalog/)**
-
-<br/>
+- 🔨 [smithery.ai](https://smithery.ai/)
+- 📑 [mcpmarket.com](https://mcpmarket.com/)
+- 🔍 and more!
 
 ---
 <!-- _class: lead -->
@@ -895,6 +769,46 @@ npx @modelcontextprotocol/inspector dotnet run -v q
 
 ---
 
+# How can I distribute my MCPs so people can use them?
+
+🎁 Pack it:
+
+```bash
+dotnet nuget pack MyFirstMcp.csproj -o ./artifacts
+```
+
+🚢 Ship it:
+
+```bash
+dotnet nuget push ./artifacts/MyFirstMcp.1.0.0.nupkg
+```
+
+🚀 Run it:
+
+```bash
+dnx MyFirstMcp
+```
+
+---
+
+# Running tools without installing them with **dnx**
+
+```bash
+> dnx --help
+
+# Description:
+#   Executes a tool from source without permanently installing it.
+
+# Usage:
+#   dotnet dnx <packageId> [<commandArguments>...] [options]
+
+# Arguments:
+#   <PACKAGE_ID>        Package reference in the form of a package identifier
+#   <commandArguments>  Arguments forwarded to the tool
+```
+
+---
+
 # Learn More: Blog Series
 
 <style scoped>
@@ -945,10 +859,6 @@ div {
                 Protocol Architecture
                 Client-Server Model
                 Tools, Resources, Prompts
-            📦 MCP Registry
-                Centralized Discovery
-                Trust & Validation
-                Namespace Management
             ✍️ Writing Effective Tools
                 Design for Agents
                 Tool Consolidation
@@ -995,7 +905,7 @@ div {
                 Protocol
                 Client-Server
                 Tools
-            📦 Registry
+            📦 Registry ⭐ NEXT
                 Discovery
                 Trust
             ✍️ Tool Design

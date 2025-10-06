@@ -76,7 +76,7 @@ section {
                 Protocol
                 Client-Server
                 Tools
-            📦 Registry<br/>✅ COVERED
+            📦 Registry<br/> ⭐ TODAY
                 Discovery
                 Trust
             ✍️ Tool Design<br/>✅ COVERED
@@ -104,10 +104,153 @@ section {
 }
 </style>
 
+- **MCP Registry: The App Store for Servers**
 - **Securing MCP Servers with OAuth2.1**
 - **Building Authenticated MCP Servers with .NET**
 - **MCP in Agentic Systems**
-- **Microsoft Agent Framework & Azure AI Foundry**
+
+---
+<!-- _class: lead -->
+
+# MCP Discovery
+
+![bg opacity:0.08 grayscale ](./img/bg10.png)
+
+---
+
+# The Fragmentation Problem
+
+<style scoped>
+section {
+  font-size: 34px;
+}
+</style>
+
+### **Too Many Places to Search**
+
+Before the official registry, developers had to check multiple sources:
+
+- 📦 [mcpservers.org](https://mcpservers.org/)
+- 🐳 [hub.docker.com/mcp](https://hub.docker.com/mcp)
+- 🌐 [mcp.so](https://mcp.so/)
+- 💻 [github.com/mcp](https://github.com/mcp)
+- 🔍 Various community catalogs and lists
+
+**Problem**: No single source of truth, no standardization, no trust model
+
+<!-- show different servers remote vs local (stdio), explain the difference -->
+
+<!-- spend some time and demonstrate examples of good mcp servers: markitdown, browsertools, playwright, context7, microsoft docs -->
+
+---
+
+# MCP Registry: The App Store for Servers
+
+<style scoped>
+section {
+  font-size: 36px;
+}
+</style>
+
+> **"An app store for MCP servers"** - Centralized discovery for the MCP ecosystem
+
+</br>
+
+* **Discovery**: Find available MCP servers across the ecosystem
+* **Trust & Validation**: GitHub OAuth, DNS verification, domain ownership
+* **Namespace Management**: Prevents conflicts (e.g., only `@user` can publish `io.github.user/*`)
+* **Status**: 🆕 Preview Release (September 2025)
+
+<!-- https://github.com/modelcontextprotocol/registry?tab=readme-ov-file -->
+
+---
+
+# Why We Need the Registry
+
+<style scoped>
+section {
+  font-size: 28px;
+}
+</style>
+
+❌ Without a registry, developers face:
+- **Fragmentation**: Servers scattered across repositories
+- **No Trust Model**: Can't verify server authenticity
+- **Naming Conflicts**: Multiple servers with same identifiers
+- **Poor Discoverability**: Hard to find what you need
+
+### **The Solution**
+
+A centralized, secure registry that:
+- ✅ Makes servers **easily discoverable**
+- ✅ Ensures **authenticity and trust**
+- ✅ Manages **namespaces** to prevent conflicts
+- ✅ Accelerates **ecosystem growth**
+
+---
+
+# Registry Architecture
+
+<style scoped>
+div {
+  display: grid;
+  place-items: center;
+}
+.mermaid {
+  transform: scale(1.1);
+  transform-origin: center;
+}
+</style>
+
+<div class="mermaid">
+    %%{init: {
+        'theme': 'dark',
+        'themeVariables': {
+            'fontSize': '28px',
+            'primaryTextColor': '#ffffff'
+        },
+        'flowchart': {
+            'nodeSpacing': 200,
+            'rankSpacing': 100
+        }
+    }}%%
+    flowchart TD
+        Developer -->|Publish| Registry
+        MCPClient -->|Discover| Registry
+        MCPClient -->|Connect| MCPServer1
+        MCPClient -->|Connect| MCPServer2
+</div>
+
+---
+
+![width:1100 bg](./img/mcp-registry.png)
+
+---
+
+# Tool Catalog: Discovery in Action
+
+<style scoped>
+section {
+  font-size: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+a {
+  color: #4a9eff;
+  text-decoration: none;
+  font-size: 36px;
+}
+</style>
+
+### Explore available MCP Servers
+
+<br/>
+
+🔗 **[teamsparkai.github.io/ToolCatalog](https://teamsparkai.github.io/ToolCatalog/)**
+
+<br/>
 
 ---
 
