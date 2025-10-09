@@ -73,7 +73,7 @@ section {
 ![saturate alt: center](./img/bg2.avif)
 
 ---
-# MCP Servers Features
+# MCP Features
 
 <style scoped>
 div {
@@ -98,7 +98,7 @@ div {
         }
     }}%%
     mindmap
-        root(MCP Servers)
+        root(MCP Features)
             🔧 Tools
                 Search Flights
                 Create Events
@@ -111,44 +111,10 @@ div {
                 Plan a Vacation
                 Summarize a Meeting
                 Draft an Email
-</div>
-
-<!-- https://modelcontextprotocol.io/docs/learn/server-concepts -->
----
-
-# MCP Clients Features
-
-<style scoped>
-div {
-  display: grid;
-  place-items: center;
-}
-.mermaid {
-  transform: scale(1.1);
-  transform-origin: center;
-}
-</style>
-
-<div class="mermaid">
-    %%{init: {
-        'theme': 'dark',
-        'themeVariables': {
-            'fontSize': '22px'
-        },
-        'flowchart': {
-            'nodeSpacing': 500,
-            'rankSpacing': 0
-        }
-    }}%%
-    mindmap
-        root(MCP Clients)
             🤖 Sampling
                 Summarize Email
                 Plan a Trip
                 Decompose a Task
-            🌲 Roots
-                FolderA
-                FolderB
             🗣️ Elicitation
                 Provide a flight destination
                 What is the date?
@@ -387,7 +353,6 @@ section {
 * **Pagination**: Default page sizes (e.g., 10-20 items)
 * **Filtering**: Built-in search parameters
 * **Truncation**: Sensible token limits (e.g., 25k tokens)
-* **Range Selection**: Date ranges, result limits
 
 ### **Helpful Truncation Messages**
 ```
