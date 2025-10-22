@@ -54,6 +54,13 @@ section {
 - Building MCP Servers with .NET
 
 ---
+# What are Large Language Models (LLMs) Limitations?
+
+* **Non-Deterministic** Nature
+* **Limited and Outdated** Knowledge
+* **Inability to Interact** with the External World
+* **Security and Privacy** Concerns
+---
 
 <style scoped>
 section {
@@ -139,6 +146,29 @@ section {
 - 📑 [mcpmarket.com](https://mcpmarket.com/)
 - 🔍 and more!
 
+---
+
+# Demo Time: Using MCP Servers
+
+```json
+"mcpServers": {
+    "chrome-devtools": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [ "chrome-devtools-mcp@latest" ]
+    },
+    "context7": {
+      "type": "http",
+      "url": "https://mcp.context7.com/mcp"
+    },
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    }
+  }
+```
+
+<!-- https://github.com/mcp/chromedevtools/chrome-devtools-mcp -->
 ---
 <!-- _class: lead -->
 
