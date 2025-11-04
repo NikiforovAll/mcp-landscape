@@ -1,6 +1,6 @@
 #:property JsonSerializerIsReflectionEnabledByDefault=true
 
-#:package Azure.AI.Agents.Persistent@1.2.0-beta.5
+#:package Azure.AI.Agents.Persistent@1.2.0-beta.6
 #:package Azure.Identity@1.16.0
 #:package Microsoft.Agents.AI@1.0.0-preview.*
 #:package Microsoft.Agents.AI.AzureAI@1.0.0-preview.*

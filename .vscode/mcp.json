@@ -1,0 +1,9 @@
+{
+  "servers": {
+    "my-auth-mcp": {
+      "url": "http://localhost:5000",
+      "type": "http"
+    }
+  },
+  "inputs": []
+}
