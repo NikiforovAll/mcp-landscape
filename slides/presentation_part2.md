@@ -158,7 +158,6 @@ section {
 
 * **Discovery**: Find available MCP servers across the ecosystem
 * **Trust & Validation**: GitHub OAuth, DNS verification, domain ownership
-* **Namespace Management**: Prevents conflicts (e.g., only `@user` can publish `io.github.user/*`)
 * **Status**: 🆕 Preview Release (September 2025)
 
 <!-- https://github.com/modelcontextprotocol/registry?tab=readme-ov-file -->
@@ -227,30 +226,125 @@ div {
 
 ---
 
-# Tool Catalog: Discovery in Action
+# MCP Registry in Action
 
 <style scoped>
 section {
-  font-size: 38px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-a {
-  color: #4a9eff;
-  text-decoration: none;
-  font-size: 36px;
+  font-size: 30px;
 }
 </style>
 
-### Explore available MCP Servers
+`GET /v0.1/servers` - List all servers with pagination
+`GET /v0.1/servers/{serverName}/versions` - List all versions of a server
+`GET /v0.1/servers/{serverName}/versions/{version}` - Get specific version of server.
 
 <br/>
+
+Get a list of registered MCP servers:
+
+```bash
+curl "https://registry.modelcontextprotocol.io/v0/servers?limit=3" | jq .servers[].server
+```
+
+<br/>
+
+##### Example of MCP Registry Client
 
 🔗 **[teamsparkai.github.io/ToolCatalog](https://teamsparkai.github.io/ToolCatalog/)**
 
-<br/>
+<!-- https://blog.modelcontextprotocol.io/posts/2025-09-08-mcp-registry-preview/ -->
+
+---
+
+# Publish Your MCP Server
+
+1️⃣ Initialize the `server.json` file:
+```bash
+mcp-publisher init
+```
+
+2️⃣ Edit the `server.json` file to define your server (next slide).
+
+3️⃣ Login via GitHub OAuth
+```bash
+mcp-publisher login github
+```
+
+4️⃣ Publish the server
+```bash
+mcp-publisher publish
+# ✓ Successfully published
+```
+
+---
+
+# Edit the generated server.json
+
+```json
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-10-17/server.schema.json",
+  "name": "io.github.username/azure-devops-mcp",
+  "title": "Azure DevOps",
+  "description": "Manage Azure DevOps work items and pipelines",
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "nuget",
+      "identifier": "Username.AzureDevOpsMcp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
+```
+
+---
+
+# Q&A
+
+<style scoped>
+div {
+  display: grid;
+  place-items: center;
+}
+.mermaid {
+  transform: scale(1.0);
+  transform-origin: center;
+}
+section {
+  font-size: 32px;
+}
+</style>
+
+<div class="mermaid">
+    %%{init: {
+        'theme': 'dark',
+        'themeVariables': {
+            'fontSize': '24px',
+            'primaryColor': '#1a1a2e',
+            'primaryTextColor': '#ffffff',
+            'primaryBorderColor': '#4a9eff',
+            'lineColor': '#4a9eff',
+            'secondaryColor': '#16213e',
+            'tertiaryColor': '#0f3460'
+        }
+    }}%%
+    mindmap
+        root((Registry))
+            🔎 Discovery
+                Centralized
+                Single Source of Truth
+            ✔️ Validation
+                GitHub OAuth
+                DNS Verification
+                Domain Ownership
+            📝 Publishing
+                mcp-publisher CLI
+                server.json Config
+                API Integration
+</div>
 
 ---
 
@@ -285,51 +379,18 @@ section {
 * 📊 **Observability**: Comprehensive logging and monitoring
 
 ---
+# Template Installation
 
-# OAuth 2.1 Architecture Overview
+```bash
+dotnet new install Nall.ModelContextProtocol.Template
 
-<style scoped>
-section {
-  font-size: 26px;
-}
-</style>
-
-### **Authorization Flow**
-1. **Discovery Phase**: Unauthenticated access returns *metadata URL*
-2. **Client Registration**: Dynamic client registration with authorization server. Some clients may be pre-registered ...
-3. **User Consent**: User provides authorization and consent
-4. **Token Exchange**:MCP client exchanges authorization code for access token.
-5. **Authenticated requests**. All subsequent requests from MCP client to MCP server include `Bearer` token.
-
-### **Key Components**
-* **Protected Resource Metadata (PRM)**: OAuth 2.0 specification for resource protection. The MCP server must implement the `/.well-known/oauth-protected-resource`
-* **Resource Indicators**: Prevents token reuse across different resources
-* **Token Validation**: Verify user identity and permissions on every request
-
----
-
-<style scoped>
-section {
-  padding-top: 0;
-  margin-top: 0;
-}
-.mermaid {
-  transform: scale(0.9);
-  transform-origin: center;
-}
-</style>
-
-![](./img/oauth_1.svg)
-
----
-
-<style scoped>
-.mermaid {
-  transform-origin: center;
-}
-</style>
-
-![](./img/oauth_2.svg)
+# Template Name         Short Name            Language  Tags
+# --------------------  --------------------  --------  -------------
+# MCP Server            mcp-server            [C#]      dotnet/ai/mcp
+# MCP Server HTTP       mcp-server-http       [C#]      dotnet/ai/mcp
+# MCP Server HTTP Auth  mcp-server-http-auth  [C#]      dotnet/ai/mcp
+# MCP Server Hybrid     mcp-server-hybrid     [C#]      dotnet/ai/mcp
+```
 
 ---
 
@@ -456,6 +517,103 @@ But there is a better way - use VSCode `mcp.json` config:
 
 ---
 
+# OAuth 2.1 Architecture Overview
+
+<style scoped>
+section {
+  font-size: 26px;
+}
+</style>
+
+### **Authorization Flow**
+1. **Discovery Phase**: Unauthenticated access returns *metadata URL*
+2. **Client Registration**: Dynamic client registration with authorization server. Some clients may be pre-registered ...
+3. **User Consent**: User provides authorization and consent
+4. **Token Exchange**:MCP client exchanges authorization code for access token.
+5. **Authenticated requests**. All subsequent requests from MCP client to MCP server include `Bearer` token.
+
+### **Key Components**
+* **Protected Resource Metadata (PRM)**: OAuth 2.0 specification for resource protection. The MCP server must implement the `/.well-known/oauth-protected-resource`
+* **Token Validation**: Verify user identity and permissions on every request
+
+---
+
+<style scoped>
+section {
+  padding-top: 0;
+  margin-top: 0;
+}
+.mermaid {
+  transform: scale(0.9);
+  transform-origin: center;
+}
+</style>
+
+![](./img/oauth_1.svg)
+
+---
+
+<style scoped>
+.mermaid {
+  transform-origin: center;
+}
+</style>
+
+![](./img/oauth_2.svg)
+
+---
+
+# Q&A
+
+<style scoped>
+div {
+  display: grid;
+  place-items: center;
+}
+.mermaid {
+  transform: scale(1.0);
+  transform-origin: center;
+}
+section {
+  font-size: 32px;
+}
+</style>
+
+<div class="mermaid">
+    %%{init: {
+        'theme': 'dark',
+        'themeVariables': {
+            'fontSize': '24px',
+            'primaryColor': '#1a1a2e',
+            'primaryTextColor': '#ffffff',
+            'primaryBorderColor': '#4a9eff',
+            'lineColor': '#4a9eff',
+            'secondaryColor': '#16213e',
+            'tertiaryColor': '#0f3460'
+        }
+    }}%%
+    mindmap
+        root((Security))
+            🛡️ Principles
+                Defense in Depth
+                Least Privilege
+                Observability
+            🔐 OAuth Flow
+                Discovery Phase
+                Client Registration
+                User Consent
+                Token Exchange
+            🔧 Key Components
+                PRM Endpoint
+                Token Validation
+            🛠️ .NET
+                AddMcp
+                Azure AD
+                Bearer Token 
+</div>
+
+---
+
 <!-- _class: lead -->
 
 # MCP in Agentic Systems
@@ -517,7 +675,6 @@ var agentMetadata = await persistentAgentsClient.Administration.CreateAgentAsync
 AIAgent agent = await persistentAgentsClient.GetAIAgentAsync(agentMetadata.Value.Id);
 ```
 
-**Full example**: `samples/agent_03_foundry_mcp.cs`
 
 ---
 
@@ -559,9 +716,22 @@ var response = await agent.RunAsync(
 
 **Result**: Agent automatically calls the MCP tool to search Microsoft Learn documentation
 
+
 ---
 
-# What We've Learned Today
+# Run It 🚀
+
+```bash
+dotnet run agent_03_foundry_mcp.cs
+```
+
+<br/>
+
+> **Full example**: `samples/agent_03_foundry_mcp.cs`
+
+---
+
+# What We've Learned Today. Q&A
 
 <style scoped>
 div {
@@ -586,26 +756,16 @@ div {
         }
     }}%%
     mindmap
-        root((MCP Landscape))
-            🌐 MCP Fundamentals
-                Protocol Architecture
-                Client-Server Model
-                Tools
+        root((Today))
             📦 MCP Registry
                 Centralized Discovery
                 Trust & Validation
-            ✍️ Writing Effective Tools
-                Design for Agents
-                Tool Consolidation
-                Token Efficiency
-                Error Handling
-                Evaluation-Driven Dev
             🔒 Security
                 OAuth 2.1
                 Authentication
             🛠️ Building with .NET
                 MCP Server Template
-                Stdio & HTTP Transport
+                Stdio & HTTP Transports
             🤖 Agentic Systems
                 Microsoft Agent Framework
                 Azure AI Foundry

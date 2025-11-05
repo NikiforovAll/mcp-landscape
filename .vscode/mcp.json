@@ -1,9 +1,8 @@
 {
   "servers": {
-    "my-auth-mcp": {
+    "echo-mcp": {
       "url": "http://localhost:5000",
       "type": "http"
     }
-  },
-  "inputs": []
+  }
 }
