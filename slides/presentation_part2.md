@@ -656,23 +656,23 @@ pre {
 </style>
 
 ```csharp
-// Create an MCP tool definition for the agent
+// Get a client to create/retrieve server side agents with.
+var client = new PersistentAgentsClient(endpoint, new AzureCliCredential());
+
+// Create an MCP tool definition that the agent can use.
 var mcpTool = new MCPToolDefinition(
     serverLabel: "microsoft_learn",
     serverUrl: "https://learn.microsoft.com/api/mcp"
 );
 mcpTool.AllowedTools.Add("microsoft_docs_search");
 
-// Create a persistent agent with MCP tools
-var agentMetadata = await persistentAgentsClient.Administration.CreateAgentAsync(
-    model: "gpt-4o-mini",
+// Create a server side persistent agent with the Azure.AI.Agents.Persistent SDK.
+PersistentAgent agent = await client.Administration.CreateAgentAsync(
+    model: model,
     name: "MicrosoftLearnAgent",
     instructions: "You answer questions by searching Microsoft Learn content only.",
     tools: [mcpTool]
 );
-
-// Retrieve the agent as an AIAgent
-AIAgent agent = await persistentAgentsClient.GetAIAgentAsync(agentMetadata.Value.Id);
 ```
 
 
@@ -685,37 +685,72 @@ section {
   font-size: 24px;
 }
 pre {
-  font-size: 18px;
+  font-size: 16px;
 }
 </style>
 
 ```csharp
+// Create a thread and send message
+PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+await client.Messages.CreateMessageAsync(thread.Id, MessageRole.User,
+  """
+  Please find what's new in .NET 10. Hint: Use the 'microsoft_docs_search' tool.
+  """
+);
+
 // Configure MCP tool resources with approval settings
-var runOptions = new ChatClientAgentRunOptions()
+var mcpToolResource = new MCPToolResource(serverLabel: "microsoft_learn")
 {
-    ChatOptions = new()
-    {
-        RawRepresentationFactory = (_) => new ThreadAndRunOptions()
-        {
-            ToolResources = new MCPToolResource(serverLabel: "microsoft_learn")
-            {
-                RequireApproval = new MCPApproval("never"),
-            }.ToToolResources(),
-        },
-    },
+  RequireApproval = new MCPApproval("never")
 };
 
-// Create a thread and run the agent
-AgentThread thread = agent.GetNewThread();
-var response = await agent.RunAsync(
-    "Please find what's new in .NET 10. Hint: Use the 'microsoft_docs_search' tool.",
-    thread,
-    runOptions
-);
+// Run the agent
+ThreadRun run = await client.Runs.CreateRunAsync(
+  thread, agent,
+  toolResources: mcpToolResource.ToToolResources());
 ```
 
 **Result**: Agent automatically calls the MCP tool to search Microsoft Learn documentation
 
+---
+# Using the Agent: Output
+
+<style scoped>
+section {
+  font-size: 24px;
+}
+pre {
+  font-size: 16px;
+}
+</style>
+
+```csharp
+// Poll until the run is completed
+do
+{
+    await Task.Delay(500);
+    run = await client.Runs.GetRunAsync(thread.Id, run.Id);
+} while (run.Status == RunStatus.Queued || run.Status == RunStatus.InProgress);
+
+// Get the messages
+Pageable<PersistentThreadMessage> messages = client.Messages.GetMessages(
+    threadId: thread.Id, order: ListSortOrder.Ascending);
+
+// Print out agent messages
+foreach (PersistentThreadMessage threadMessage in messages)
+{
+  if (threadMessage.Role == MessageRole.Agent)
+  {
+    foreach (MessageContent content in threadMessage.ContentItems)
+    {
+        if (content is MessageTextContent textContent)
+        {
+            Console.WriteLine(textContent.Text);
+        }
+    }
+  }
+}
+```
 
 ---
 

@@ -1,14 +1,12 @@
 #:property JsonSerializerIsReflectionEnabledByDefault=true
 
-#:package Azure.AI.Agents.Persistent@1.2.0-beta.6
-#:package Azure.Identity@1.16.0
-#:package Microsoft.Agents.AI@1.0.0-preview.*
-#:package Microsoft.Agents.AI.AzureAI@1.0.0-preview.*
+#:package Azure.AI.Agents.Persistent@1.2.0-beta.8
+#:package Azure.Identity@1.17.0
 #:package Spectre.Console@0.51.1
 
+using Azure;
 using Azure.AI.Agents.Persistent;
 using Azure.Identity;
-using Microsoft.Agents.AI;
 using Spectre.Console;
 
 var endpoint =
@@ -21,7 +19,7 @@ const string AgentInstructions =
     "You answer questions by searching the Microsoft Learn content only.";
 
 // Get a client to create/retrieve server side agents with.
-var persistentAgentsClient = new PersistentAgentsClient(endpoint, new AzureCliCredential());
+var client = new PersistentAgentsClient(endpoint, new AzureCliCredential());
 
 // Create an MCP tool definition that the agent can use.
 var mcpTool = new MCPToolDefinition(
@@ -31,53 +29,78 @@ var mcpTool = new MCPToolDefinition(
 mcpTool.AllowedTools.Add("microsoft_docs_search");
 
 // Create a server side persistent agent with the Azure.AI.Agents.Persistent SDK.
-var agentMetadata = await persistentAgentsClient.Administration.CreateAgentAsync(
+PersistentAgent agent = await client.Administration.CreateAgentAsync(
     model: model,
     name: AgentName,
     instructions: AgentInstructions,
     tools: [mcpTool]
 );
 
-// Retrieve an already created server side persistent agent as an AIAgent.
-AIAgent agent = await persistentAgentsClient.GetAIAgentAsync(agentMetadata.Value.Id);
-
 Console.WriteLine($"Agent '{agent.Name}' is ready to use.");
 
-// Create run options to configure the agent invocation.
-var runOptions = new ChatClientAgentRunOptions()
+// Create a thread for conversation
+PersistentAgentThread thread = await client.Threads.CreateThreadAsync();
+
+// Create the message
+await client.Messages.CreateMessageAsync(
+    thread.Id,
+    MessageRole.User,
+    """
+    Please find what's new in .NET 10.
+
+    Hint: Use the 'microsoft_docs_search' tool.
+    """
+);
+
+// Create MCP tool resources with approval settings
+var mcpToolResource = new MCPToolResource(serverLabel: "microsoft_learn")
 {
-    ChatOptions = new()
-    {
-        RawRepresentationFactory = (_) =>
-            new ThreadAndRunOptions()
-            {
-                ToolResources = new MCPToolResource(serverLabel: "microsoft_learn")
-                {
-                    RequireApproval = new MCPApproval("never"),
-                }.ToToolResources(),
-            },
-    },
+    RequireApproval = new MCPApproval("never"),
 };
 
-// You can then invoke the agent like any other AIAgent.
-AgentThread thread = agent.GetNewThread();
-
-var response = await AnsiConsole.Status()
+// Run the agent and wait for completion
+ThreadRun run = null!;
+await AnsiConsole
+    .Status()
     .Spinner(Spinner.Known.Dots)
-    .StartAsync("Agent is thinking...", async ctx =>
+    .StartAsync(
+        "Agent is thinking...",
+        async ctx =>
+        {
+            run = await client.Runs.CreateRunAsync(
+                thread,
+                agent,
+                toolResources: mcpToolResource.ToToolResources()
+            );
+
+            do
+            {
+                await Task.Delay(500);
+                run = await client.Runs.GetRunAsync(thread.Id, run.Id);
+            } while (run.Status == RunStatus.Queued || run.Status == RunStatus.InProgress);
+        }
+    );
+
+// Get the messages
+Pageable<PersistentThreadMessage> messages = client.Messages.GetMessages(
+    threadId: thread.Id,
+    order: ListSortOrder.Ascending
+);
+
+foreach (PersistentThreadMessage threadMessage in messages)
+{
+    if (threadMessage.Role == MessageRole.Agent)
     {
-        return await agent.RunAsync(
-            """
-            Please find what's new in .NET 10.
-
-            Hint: Use the 'microsoft_docs_search' tool.
-            """,
-            thread,
-            runOptions
-        );
-    });
-
-Console.WriteLine(response);
+        foreach (MessageContent content in threadMessage.ContentItems)
+        {
+            if (content is MessageTextContent textContent)
+            {
+                Console.WriteLine(textContent.Text);
+            }
+        }
+    }
+}
 
 // Cleanup for sample purposes.
-await persistentAgentsClient.Administration.DeleteAgentAsync(agent.Id);
+await client.Threads.DeleteThreadAsync(thread.Id);
+await client.Administration.DeleteAgentAsync(agent.Id);
