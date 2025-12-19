@@ -29,12 +29,26 @@ jobs:
       - name: Copy images
         run: mkdir build && cp -R slides/img build/img && cp -R slides/themes build/themes
 
+      - name: Copy festive images and themes
+        run: |
+          mkdir -p build/mcp-landscape-festive
+          cp -R slides-festive/img build/mcp-landscape-festive/img
+          cp -R slides-festive/themes build/mcp-landscape-festive/themes
+
       - name: Marp Build (README)
         uses: docker://marpteam/marp-cli:latest
         with:
           args: --theme-set slides/themes -o build/index.html --html -- slides/presentation.md
         env:
           MARP_USER: root:root
+
+      - name: Marp Build (Festive)
+        uses: docker://marpteam/marp-cli:latest
+        with:
+          args: --theme-set slides-festive/themes -o build/mcp-landscape-festive/index.html --html -- slides-festive/presentation_festive.md
+        env:
+          MARP_USER: root:root
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
