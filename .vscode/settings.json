@@ -12,6 +12,8 @@
         "https://cunhapaulo.github.io/marpx/themes/socrates.css",
         "https://cunhapaulo.github.io/marpx/themes/sparta.css",
         "./slides/themes/theme.css",
-        "./slides/themes/base.css"
+        "./slides/themes/base.css",
+        "./slides-festive/themes/base.css",
+        "./slides-festive/themes/festive.css"
     ]
 }

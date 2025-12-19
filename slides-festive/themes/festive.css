@@ -1,0 +1,396 @@
+/* @theme festive */
+
+@import "base";
+
+:root {
+    /*------------< FESTIVE COLOR PALETTE >---------------------------------*/
+    --festive-burgundy: #800020;
+    --festive-burgundy-light: #a52a4a;
+    --festive-burgundy-dark: #4a0012;
+    --festive-green: #1a472a;
+    --festive-green-light: #5fe094;
+    --festive-green-dark: #0f2417;
+    --festive-gold: #d4a84b;
+    --festive-gold-light: #e8c36a;
+    --festive-snow: #fff8f0;
+    --festive-cream: #f5e6c8;
+    --festive-silver: #c0c0c0;
+
+    /*------------< CORE THEME PARAMETERS >---------------------------------*/
+
+    --marpx-color-light-grey: #a6a6a6;
+    --marpx-color-dark-grey: #000000;
+
+    --marpx-theme-color: var(--festive-gold);
+    --marpx-theme-background-color: var(--festive-green-dark);
+
+    --marpx-theme-font-family: 'Source Sans Pro', sans-serif;
+
+    /* Text colors */
+    --marpx-theme-font-color: var(--festive-snow);
+    --marpx-theme-bold-color: var(--festive-burgundy-light);
+    --marpx-theme-marker-color: var(--festive-gold);
+
+    /* Headings */
+    --marpx-theme-h1-color: var(--festive-gold);
+    --marpx-theme-h1-bold-color: var(--festive-burgundy);
+    --marpx-theme-h2-color: var(--festive-green-light);
+
+    /* Specific elements */
+    --marpx-theme-chapter-color: var(--festive-green);
+    --marpx-theme-subtitle-color: var(--festive-cream);
+    --marpx-theme-code-color: #f80d0d;
+    --marpx-theme-highlight-color: var(--festive-gold-light);
+
+    /* Captions and reference texts */
+    --marpx-theme-figure-captiontext: "Fig. ";
+    --marpx-theme-figure-captiontext-color: var(--festive-burgundy-light);
+
+    --marpx-theme-table-captiontext: "Table ";
+    --marpx-theme-table-captiontext-color: var(--festive-burgundy-light);
+
+    /* Navigation and reference elements */
+    --marpx-theme-toc-color: var(--festive-green);
+    --marpx-theme-toc-background-color: var(--festive-snow);
+    --marpx-theme-footnote-mark-color: var(--festive-burgundy);
+
+    /* Branding */
+    --marpx-theme-brandlogo: "";
+
+    /*------------< TITLE SLIDE PARAMETERS >-----------------------------*/
+
+    /* Font sizes */
+    --marpx-title_academic-title-size: 140%;
+    --marpx-title_academic-title-font-weight: 600;
+    --marpx-title_academic-subtitle-size: 95%;
+    --marpx-title_academic-author-size: 115%;
+    --marpx-title_academic-date-size: 95%;
+    --marpx-title_academic-institute-size: 85%;
+    --marpx-title_academic-letter-spacing: 0.05px;
+
+    /* Colors */
+    --marpx-title_academic-font-color: var(--festive-snow);
+    --marpx-title_academic-background-color: var(--festive-green-dark);
+
+    --marpx-title_academic-title-color: var(--festive-gold);
+    --marpx-title_academic-subtitle-color: var(--festive-silver);
+    --marpx-title_academic-author-color: var(--festive-burgundy);
+    --marpx-title_academic-date-color: var(--festive-snow);
+    --marpx-title_academic-organization-color: var(--festive-snow);
+    --marpx-title_academic-border-color: var(--festive-gold);
+
+    /*------------< TABLE COMPONENT PARAMETERS >---------------------------------*/
+
+    --marpx-table-font-size: 22px;
+    --marpx-table-font-color: var(--festive-snow);
+    --marpx-table-header-background-color: var(--festive-green);
+    --marpx-table-header-color-color: var(--festive-gold);
+    --marpx-table-border-top-color: var(--festive-gold);
+    --marpx-table-border-bottom-color: var(--festive-silver);
+    --marpx-table-nth-child-color-color: rgba(26, 71, 42, 0.3);
+    --marpx-table-hover-color: var(--festive-gold);
+    --marpx-table-hover-background-color: var(--festive-green);
+
+    /*------------< QUOTE COMPONENT PARAMETERS >---------------------------------*/
+
+    /* Light quote variant */
+    --marpx-quote-font-family: Bookerly, Faustina, Times, serif;
+    --marpx-quote-background-color: var(--festive-snow);
+    --marpx-quote-paragraph-background-color: var(--festive-snow);
+    --marpx-quote-bold-color: var(--festive-burgundy);
+
+    /* Dark quote variant */
+    --marpx-quote_dark-font: Faustina, Bookerly, Times, serif;
+    --marpx-quote_dark-font-color: var(--festive-snow);
+    --marpx-quote_dark-color-background: var(--festive-green);
+    --marpx-quote_dark-color-paragraph-background: var(--festive-green);
+    --marpx-quote_dark-bold-color: var(--festive-gold);
+
+    /*------------< REFERENCES COMPONENT PARAMETERS >---------------------------------*/
+
+    --marpx-references-header-color: var(--festive-gold);
+    --marpx-references-bold-color: var(--festive-burgundy);
+    --marpx-references-background-color: var(--festive-green-dark);
+}
+
+/*------------< FESTIVE BACKGROUND PATTERNS >---------------------------------*/
+
+/* Real snowflake patterns - 6-pointed with branches */
+:root {
+    /* Large detailed snowflake */
+    --festive-bg-snowflakes: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cg stroke='%23d4a84b' stroke-opacity='0.04' fill='none' stroke-width='1' stroke-linecap='round'%3E%3Cg transform='translate(50,50)'%3E%3Cline x1='0' y1='-20' x2='0' y2='20'/%3E%3Cline x1='-17.3' y1='-10' x2='17.3' y2='10'/%3E%3Cline x1='-17.3' y1='10' x2='17.3' y2='-10'/%3E%3Cline x1='0' y1='-15' x2='-5' y2='-10'/%3E%3Cline x1='0' y1='-15' x2='5' y2='-10'/%3E%3Cline x1='0' y1='15' x2='-5' y2='10'/%3E%3Cline x1='0' y1='15' x2='5' y2='10'/%3E%3Cline x1='-13' y1='-7.5' x2='-10' y2='-12'/%3E%3Cline x1='-13' y1='-7.5' x2='-16' y2='-5'/%3E%3Cline x1='13' y1='7.5' x2='10' y2='12'/%3E%3Cline x1='13' y1='7.5' x2='16' y2='5'/%3E%3Cline x1='-13' y1='7.5' x2='-10' y2='12'/%3E%3Cline x1='-13' y1='7.5' x2='-16' y2='5'/%3E%3Cline x1='13' y1='-7.5' x2='10' y2='-12'/%3E%3Cline x1='13' y1='-7.5' x2='16' y2='-5'/%3E%3Ccircle cx='0' cy='0' r='3'/%3E%3C/g%3E%3Cg transform='translate(150,150)'%3E%3Cline x1='0' y1='-15' x2='0' y2='15'/%3E%3Cline x1='-13' y1='-7.5' x2='13' y2='7.5'/%3E%3Cline x1='-13' y1='7.5' x2='13' y2='-7.5'/%3E%3Cline x1='0' y1='-11' x2='-4' y2='-7'/%3E%3Cline x1='0' y1='-11' x2='4' y2='-7'/%3E%3Cline x1='0' y1='11' x2='-4' y2='7'/%3E%3Cline x1='0' y1='11' x2='4' y2='7'/%3E%3Ccircle cx='0' cy='0' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+    /* Scattered small snowflakes */
+    --festive-bg-snowflakes-small: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg stroke='%23d4a84b' stroke-opacity='0.035' fill='none' stroke-width='0.8' stroke-linecap='round'%3E%3Cg transform='translate(30,30)'%3E%3Cline x1='0' y1='-8' x2='0' y2='8'/%3E%3Cline x1='-7' y1='-4' x2='7' y2='4'/%3E%3Cline x1='-7' y1='4' x2='7' y2='-4'/%3E%3Cline x1='0' y1='-6' x2='-2' y2='-4'/%3E%3Cline x1='0' y1='-6' x2='2' y2='-4'/%3E%3Cline x1='0' y1='6' x2='-2' y2='4'/%3E%3Cline x1='0' y1='6' x2='2' y2='4'/%3E%3C/g%3E%3Cg transform='translate(90,90)'%3E%3Cline x1='0' y1='-6' x2='0' y2='6'/%3E%3Cline x1='-5.2' y1='-3' x2='5.2' y2='3'/%3E%3Cline x1='-5.2' y1='3' x2='5.2' y2='-3'/%3E%3C/g%3E%3Cg transform='translate(20,100)'%3E%3Cline x1='0' y1='-5' x2='0' y2='5'/%3E%3Cline x1='-4.3' y1='-2.5' x2='4.3' y2='2.5'/%3E%3Cline x1='-4.3' y1='2.5' x2='4.3' y2='-2.5'/%3E%3C/g%3E%3Cg transform='translate(100,20)'%3E%3Cline x1='0' y1='-7' x2='0' y2='7'/%3E%3Cline x1='-6' y1='-3.5' x2='6' y2='3.5'/%3E%3Cline x1='-6' y1='3.5' x2='6' y2='-3.5'/%3E%3Cline x1='0' y1='-5' x2='-2' y2='-3'/%3E%3Cline x1='0' y1='-5' x2='2' y2='-3'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+
+    --festive-bg-dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='%23d4a84b' fill-opacity='0.025'%3E%3Ccircle cx='10' cy='10' r='1.5'/%3E%3Ccircle cx='40' cy='25' r='1'/%3E%3Ccircle cx='25' cy='45' r='1.5'/%3E%3Ccircle cx='55' cy='55' r='1'/%3E%3C/g%3E%3C/svg%3E");
+
+    --festive-bg-corner-glow: radial-gradient(ellipse at top right, rgba(212, 168, 75, 0.08) 0%, transparent 50%),
+                              radial-gradient(ellipse at bottom left, rgba(128, 0, 32, 0.06) 0%, transparent 50%);
+}
+
+section {
+    line-height: 1.2em;
+    background-image: var(--festive-bg-corner-glow), var(--festive-bg-snowflakes-small);
+    background-color: var(--festive-green-dark);
+}
+
+.box {
+    border: 2px solid var(--festive-gold);
+    border-radius: 6px;
+    padding: 2px 8px;
+    display: inline-block;
+}
+
+/* Code blocks (fenced code) */
+section pre {
+    background: #1a2e1a !important;
+    border: 1px solid var(--festive-green);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+section pre code {
+    background: transparent !important;
+    border: none;
+    padding: 0;
+    color: var(--festive-snow);
+}
+
+/* Syntax highlighting for code blocks - festive colors */
+section pre .hljs-string,
+section pre .hljs-attr {
+    color: #7defa1 !important;
+}
+
+section pre .hljs-keyword,
+section pre .hljs-built_in {
+    color: #c45a7a !important;
+}
+
+section pre .hljs-number,
+section pre .hljs-literal {
+    color: #ffd700 !important;
+}
+
+section pre .hljs-comment {
+    color: #88a088 !important;
+}
+
+section pre .hljs-title,
+section pre .hljs-function {
+    color: #87ceeb !important;
+}
+
+section pre .hljs-property,
+section pre .hljs-name {
+    color: #ffb366 !important;
+}
+
+section pre .hljs-subst {
+    color: #ffd700 !important;
+}
+
+section pre .hljs-variable {
+    color: #87ceeb !important;
+}
+
+/* Inline code */
+section code:not(pre code) {
+    border: 2px solid var(--festive-green);
+    border-radius: 12px;
+    padding: 2px 8px;
+    background: rgba(22, 91, 51, 0.4);
+    color: var(--festive-snow);
+    font-size: 0.9em;
+    display: inline-block;
+}
+
+section.slide.white,
+section.white-slide {
+    color: var(--festive-green-dark);
+}
+
+section.references {
+    color: var(--festive-snow) !important;
+    --marpx-theme-marker-color: var(--festive-gold);
+}
+
+section.references tabcaption,
+section.references figcaption {
+    color: var(--festive-silver);
+}
+
+section.references a:link {
+    color: var(--festive-green-light) !important;
+}
+
+section.references a:hover {
+    color: var(--festive-gold) !important;
+}
+
+section.title-academic .date {
+    color: var(--marpx-title_academic-date-color);
+}
+
+section.title-academic .organization {
+    color: var(--marpx-title_academic-organization-color);
+}
+
+section blockquote {
+    color: var(--festive-snow);
+    font-size: 0.8em;
+    border-left: 8px solid var(--festive-gold);
+}
+
+section.lead h1 {
+    font-size: 90px;
+    height: 60vh;
+    padding: 20px 0;
+}
+
+section.hero h2 {
+    font-size: 60px;
+    position: absolute;
+    top: 20px;
+}
+
+section.hero li {
+    font-size: 32px;
+}
+
+section.hero p {
+    padding: 15px 0;
+    font-size: 30px;
+}
+
+/* Festive pagination styling */
+section::after {
+    background-color: rgba(128, 0, 32, 0.9);
+    border-radius: 100px;
+    bottom: 22px;
+    color: var(--festive-gold);
+    font-size: 14pt;
+    left: 50px;
+    margin: 0;
+    padding: 2px 12px;
+    position: absolute;
+}
+
+/* Links in festive theme */
+section a:link {
+    color: var(--festive-green-light);
+}
+
+section a:visited {
+    color: var(--festive-silver);
+}
+
+section a:hover {
+    color: var(--festive-gold);
+}
+
+/* Mermaid diagram styling for dark background */
+section .mermaid {
+    background: transparent;
+}
+
+/* Chapter slides with festive styling */
+section.chapter {
+    background-color: var(--festive-burgundy) !important;
+    background-image: var(--festive-bg-snowflakes);
+}
+
+section.chapter > h1 {
+    color: var(--festive-gold);
+}
+
+section.chapter > h2 {
+    color: var(--festive-snow);
+}
+
+/* End slide festive styling */
+section.end,
+section.end-bg {
+    background-color: var(--festive-burgundy) !important;
+    background-image: var(--festive-bg-snowflakes);
+    overflow: hidden;
+}
+
+section.end > h1,
+section.end-bg > h1 {
+    color: var(--festive-gold);
+}
+
+/* Festive ribbon on end slides */
+section.end::before,
+section.end-bg::before {
+    content: "🎄 Festive Calendar 2025 ❄️";
+    position: absolute;
+    top: 28px;
+    right: -130px;
+    width: 300px;
+    padding: 6px 60px 6px 150px;
+    background: linear-gradient(135deg, var(--festive-green) 0%, var(--festive-green-dark) 100%);
+    color: var(--festive-snow);
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 0.5px;
+    transform: rotate(45deg);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+/* Title slides - subtle festive corner accents */
+section.title-academic {
+    background-image: var(--festive-bg-corner-glow);
+}
+
+/* Lead/hero slides - enhanced festive background with larger snowflakes */
+section.lead,
+section.hero {
+    background-image: var(--festive-bg-corner-glow), var(--festive-bg-snowflakes);
+    background-color: var(--festive-green-dark);
+    overflow: hidden;
+}
+
+/* Festive Tech Calendar corner ribbon */
+section.hero::before {
+    content: "🎄 Festive Calendar 2025 ❄️";
+    position: absolute;
+    top: 28px;
+    right: -130px;
+    width: 300px;
+    padding: 6px 60px 6px 150px;
+    background: linear-gradient(135deg, var(--festive-burgundy) 0%, var(--festive-burgundy-dark) 100%);
+    color: var(--festive-snow);
+    font-size: 16px;
+    font-weight: 800;
+    text-align: center;
+    letter-spacing: 0.5px;
+    transform: rotate(45deg);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+}
+
+/* Quote slides - snowflakes on light background */
+section.quote {
+    background-image: var(--festive-bg-snowflakes-small);
+}
+
+section.quote.dark {
+    background-image: var(--festive-bg-snowflakes);
+}
+
+/* White slides override - minimal festive touch */
+section.slide.white,
+section.white-slide {
+    background-image: radial-gradient(ellipse at bottom right, rgba(26, 71, 42, 0.05) 0%, transparent 40%);
+    background-color: white;
+}
+
+/* References slides */
+section.references {
+    background-image: var(--festive-bg-dots);
+}
