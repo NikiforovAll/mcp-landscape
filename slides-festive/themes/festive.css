@@ -1,0 +1,302 @@
+/* @theme festive */
+
+@import "base";
+
+:root {
+    /*------------< FESTIVE COLOR PALETTE >---------------------------------*/
+    --festive-red: #c41e3a;
+    --festive-red-light: #ff5252;
+    --festive-red-dark: #9b111e;
+    --festive-green: #1a472a;
+    --festive-green-light: #5fe094;
+    --festive-green-dark: #0f2417;
+    --festive-gold: #d4a84b;
+    --festive-gold-light: #e8c36a;
+    --festive-snow: #fff8f0;
+    --festive-cream: #f5e6c8;
+    --festive-silver: #c0c0c0;
+
+    /*------------< CORE THEME PARAMETERS >---------------------------------*/
+
+    --marpx-color-light-grey: #a6a6a6;
+    --marpx-color-dark-grey: #000000;
+
+    --marpx-theme-color: var(--festive-gold);
+    --marpx-theme-background-color: var(--festive-green-dark);
+
+    --marpx-theme-font-family: 'Source Sans Pro', sans-serif;
+
+    /* Text colors */
+    --marpx-theme-font-color: var(--festive-snow);
+    --marpx-theme-bold-color: var(--festive-red-light);
+    --marpx-theme-marker-color: var(--festive-gold);
+
+    /* Headings */
+    --marpx-theme-h1-color: var(--festive-gold);
+    --marpx-theme-h1-bold-color: var(--festive-red);
+    --marpx-theme-h2-color: var(--festive-green-light);
+
+    /* Specific elements */
+    --marpx-theme-chapter-color: var(--festive-green);
+    --marpx-theme-subtitle-color: var(--festive-cream);
+    --marpx-theme-code-color: #f80d0d;
+    --marpx-theme-highlight-color: var(--festive-gold-light);
+
+    /* Captions and reference texts */
+    --marpx-theme-figure-captiontext: "Fig. ";
+    --marpx-theme-figure-captiontext-color: var(--festive-red-light);
+
+    --marpx-theme-table-captiontext: "Table ";
+    --marpx-theme-table-captiontext-color: var(--festive-red-light);
+
+    /* Navigation and reference elements */
+    --marpx-theme-toc-color: var(--festive-green);
+    --marpx-theme-toc-background-color: var(--festive-snow);
+    --marpx-theme-footnote-mark-color: var(--festive-red);
+
+    /* Branding */
+    --marpx-theme-brandlogo: "";
+
+    /*------------< TITLE SLIDE PARAMETERS >-----------------------------*/
+
+    /* Font sizes */
+    --marpx-title_academic-title-size: 140%;
+    --marpx-title_academic-title-font-weight: 600;
+    --marpx-title_academic-subtitle-size: 95%;
+    --marpx-title_academic-author-size: 115%;
+    --marpx-title_academic-date-size: 95%;
+    --marpx-title_academic-institute-size: 85%;
+    --marpx-title_academic-letter-spacing: 0.05px;
+
+    /* Colors */
+    --marpx-title_academic-font-color: var(--festive-snow);
+    --marpx-title_academic-background-color: var(--festive-green-dark);
+
+    --marpx-title_academic-title-color: var(--festive-gold);
+    --marpx-title_academic-subtitle-color: var(--festive-silver);
+    --marpx-title_academic-author-color: var(--festive-red);
+    --marpx-title_academic-date-color: var(--festive-snow);
+    --marpx-title_academic-organization-color: var(--festive-snow);
+    --marpx-title_academic-border-color: var(--festive-gold);
+
+    /*------------< TABLE COMPONENT PARAMETERS >---------------------------------*/
+
+    --marpx-table-font-size: 22px;
+    --marpx-table-font-color: var(--festive-snow);
+    --marpx-table-header-background-color: var(--festive-green);
+    --marpx-table-header-color-color: var(--festive-gold);
+    --marpx-table-border-top-color: var(--festive-gold);
+    --marpx-table-border-bottom-color: var(--festive-silver);
+    --marpx-table-nth-child-color-color: rgba(26, 71, 42, 0.3);
+    --marpx-table-hover-color: var(--festive-gold);
+    --marpx-table-hover-background-color: var(--festive-green);
+
+    /*------------< QUOTE COMPONENT PARAMETERS >---------------------------------*/
+
+    /* Light quote variant */
+    --marpx-quote-font-family: Bookerly, Faustina, Times, serif;
+    --marpx-quote-background-color: var(--festive-snow);
+    --marpx-quote-paragraph-background-color: var(--festive-snow);
+    --marpx-quote-bold-color: var(--festive-red);
+
+    /* Dark quote variant */
+    --marpx-quote_dark-font: Faustina, Bookerly, Times, serif;
+    --marpx-quote_dark-font-color: var(--festive-snow);
+    --marpx-quote_dark-color-background: var(--festive-green);
+    --marpx-quote_dark-color-paragraph-background: var(--festive-green);
+    --marpx-quote_dark-bold-color: var(--festive-gold);
+
+    /*------------< REFERENCES COMPONENT PARAMETERS >---------------------------------*/
+
+    --marpx-references-header-color: var(--festive-gold);
+    --marpx-references-bold-color: var(--festive-red);
+    --marpx-references-background-color: var(--festive-green-dark);
+}
+
+section {
+    line-height: 1.2em;
+}
+
+.box {
+    border: 2px solid var(--festive-gold);
+    border-radius: 6px;
+    padding: 2px 8px;
+    display: inline-block;
+}
+
+/* Code blocks (fenced code) */
+section pre {
+    background: #1a2e1a !important;
+    border: 1px solid var(--festive-green);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+section pre code {
+    background: transparent !important;
+    border: none;
+    padding: 0;
+    color: var(--festive-snow);
+}
+
+/* Syntax highlighting for code blocks - festive colors */
+section pre .hljs-string,
+section pre .hljs-attr {
+    color: #7defa1 !important;
+}
+
+section pre .hljs-keyword,
+section pre .hljs-built_in {
+    color: #ff4d4d !important;
+}
+
+section pre .hljs-number,
+section pre .hljs-literal {
+    color: #ffd700 !important;
+}
+
+section pre .hljs-comment {
+    color: #88a088 !important;
+}
+
+section pre .hljs-title,
+section pre .hljs-function {
+    color: #87ceeb !important;
+}
+
+section pre .hljs-property,
+section pre .hljs-name {
+    color: #ffb366 !important;
+}
+
+section pre .hljs-subst {
+    color: #ffd700 !important;
+}
+
+section pre .hljs-variable {
+    color: #87ceeb !important;
+}
+
+/* Inline code */
+section code:not(pre code) {
+    border: 2px solid var(--festive-green);
+    border-radius: 12px;
+    padding: 2px 8px;
+    background: rgba(22, 91, 51, 0.4);
+    color: var(--festive-snow);
+    font-size: 0.9em;
+    display: inline-block;
+}
+
+section.slide.white,
+section.white-slide {
+    color: var(--festive-green-dark);
+}
+
+section.references {
+    color: var(--festive-snow) !important;
+    --marpx-theme-marker-color: var(--festive-gold);
+}
+
+section.references tabcaption,
+section.references figcaption {
+    color: var(--festive-silver);
+}
+
+section.references a:link {
+    color: var(--festive-green-light) !important;
+}
+
+section.references a:hover {
+    color: var(--festive-gold) !important;
+}
+
+section.title-academic .date {
+    color: var(--marpx-title_academic-date-color);
+}
+
+section.title-academic .organization {
+    color: var(--marpx-title_academic-organization-color);
+}
+
+section blockquote {
+    color: var(--festive-snow);
+    font-size: 0.8em;
+    border-left: 8px solid var(--festive-gold);
+}
+
+section.lead h1 {
+    font-size: 90px;
+    height: 60vh;
+    padding: 20px 0;
+}
+
+section.hero h2 {
+    font-size: 60px;
+    position: absolute;
+    top: 20px;
+}
+
+section.hero li {
+    font-size: 32px;
+}
+
+section.hero p {
+    padding: 15px 0;
+    font-size: 30px;
+}
+
+/* Festive pagination styling */
+section::after {
+    background-color: rgba(196, 30, 58, 0.9);
+    border-radius: 100px;
+    bottom: 22px;
+    color: var(--festive-gold);
+    font-size: 14pt;
+    left: 50px;
+    margin: 0;
+    padding: 2px 12px;
+    position: absolute;
+}
+
+/* Links in festive theme */
+section a:link {
+    color: var(--festive-green-light);
+}
+
+section a:visited {
+    color: var(--festive-silver);
+}
+
+section a:hover {
+    color: var(--festive-gold);
+}
+
+/* Mermaid diagram styling for dark background */
+section .mermaid {
+    background: transparent;
+}
+
+/* Chapter slides with festive styling */
+section.chapter {
+    background-color: var(--festive-red) !important;
+}
+
+section.chapter > h1 {
+    color: var(--festive-gold);
+}
+
+section.chapter > h2 {
+    color: var(--festive-snow);
+}
+
+/* End slide festive styling */
+section.end,
+section.end-bg {
+    background-color: var(--festive-red) !important;
+}
+
+section.end > h1,
+section.end-bg > h1 {
+    color: var(--festive-gold);
+}
